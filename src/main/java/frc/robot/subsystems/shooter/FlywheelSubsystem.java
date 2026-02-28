@@ -218,8 +218,8 @@ public class FlywheelSubsystem extends SubsystemBase {
 
     public Command stop() {
         return this.runOnce(() -> {
-            m_flywheel.setSpeed(RPM.of(0));
-            m_smartMotorController.setVoltage(Volts.of(0));
+            m_smartMotorController.stopClosedLoopController();
+            m_smartMotorController.setDutyCycle(0);
         });
     }
 

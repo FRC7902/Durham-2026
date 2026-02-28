@@ -174,12 +174,10 @@ public final class Constants {
         public static final double SIM_PID_kI = 0.0; // TODO
         public static final double SIM_PID_kD = 0.0; // TODO
 
-        // public static final SimpleMotorFeedforward FEEDFORWARD = new
-        // SimpleMotorFeedforward(0.27937, 0.089836,
-        // 0.014557); // TODO
-        // public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new
-        // SimpleMotorFeedforward(0.27937, 0.089836,
-        // 0.014557); // TODO
+        public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.27937, 0.089836,
+                0.014557); // TODO
+        public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(0.27937, 0.089836,
+                0.014557); // TODO
 
         public static final Time CLOSED_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
         public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);

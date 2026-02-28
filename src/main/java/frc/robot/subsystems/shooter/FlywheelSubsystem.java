@@ -75,9 +75,8 @@ public class FlywheelSubsystem extends SubsystemBase {
                 .withMotorInverted(FlywheelConstants.LEADER_MOTOR_INVERTED)
                 .withClosedLoopRampRate(FlywheelConstants.CLOSED_LOOP_RAMP_RATE_SEC)
                 .withOpenLoopRampRate(FlywheelConstants.OPEN_LOOP_RAMP_RATE_SEC)
-                // TODO: Is feedfoward necessary?
-                // .withFeedforward(FlywheelConstants.FEEDFORWARD)
-                // .withSimFeedforward(FlywheelConstants.SIM_FEEDFORWARD)
+                .withFeedforward(FlywheelConstants.FEEDFORWARD)
+                .withSimFeedforward(FlywheelConstants.SIM_FEEDFORWARD)
                 .withControlMode(ControlMode.CLOSED_LOOP)
                 .withFollowers(Pair.of(m_followerMotor, FlywheelConstants.FOLLOWER_MOTOR_INVERTED))
                 .withMomentOfInertia(FlywheelConstants.MOI);

@@ -170,7 +170,7 @@ public final class Constants {
 
         public static final Current STATOR_CURRENT_LIMIT_AMPS = Amps.of(50);
 
-        public static final double PID_kP = 1; // TODO
+        public static final double PID_kP = 0.85; // TODO
         public static final double PID_kI = 0.0; // TODO
         public static final double PID_kD = 0.0; // TODO
 

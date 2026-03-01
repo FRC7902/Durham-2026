@@ -158,7 +158,7 @@ public final class Constants {
         public static final int FOLLOWER_MOTOR_CAN_ID = 21;
 
         public static final DCMotor MOTOR = DCMotor.getKrakenX60Foc(2);
-        public static final GearBox GEARBOX = GearBox.fromStages("1:2");
+        public static final GearBox GEARBOX = GearBox.fromStages("18:24");
 
         public static final MotorMode IDLE_MODE = MotorMode.COAST;
 

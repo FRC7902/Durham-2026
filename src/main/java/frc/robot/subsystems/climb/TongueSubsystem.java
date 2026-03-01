@@ -58,7 +58,7 @@ public class TongueSubsystem extends SubsystemBase {
                 .withFeedforward(TongueConstants.FEEDFORWARD)
                 .withControlMode(ControlMode.CLOSED_LOOP);
 
-        m_smartMotorController = new NovaWrapper(m_motor, DCMotor.getNEO(1), motorConfig);
+        m_smartMotorController = new NovaWrapper(m_motor, DCMotor.getNeo550(1), motorConfig);
 
         MechanismPositionConfig robotToMechanism = new MechanismPositionConfig()
                 .withMaxRobotHeight(MechanismPositionConstants.ROBOT_MAX_HEIGHT)

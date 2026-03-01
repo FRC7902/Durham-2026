@@ -9,7 +9,8 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
+import com.thethriftybot.devices.ThriftyNova;
+import com.thethriftybot.devices.ThriftyNova.MotorType;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Distance;
@@ -26,16 +27,17 @@ import yams.motorcontrollers.SmartMotorControllerConfig;
 import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
+import yams.motorcontrollers.local.NovaWrapper;
 import yams.motorcontrollers.local.SparkWrapper;
 
 public class TongueSubsystem extends SubsystemBase {
 
-    private final SparkMax m_motor;
+    private final ThriftyNova m_motor;
     private final SmartMotorController m_smartMotorController;
     private final Elevator m_tongue;
 
     public TongueSubsystem() {
-        m_motor = new SparkMax(TongueConstants.MOTOR_CAN_ID, SparkLowLevel.MotorType.kBrushless);
+        m_motor = new ThriftyNova(TongueConstants.MOTOR_CAN_ID, MotorType.NEO);
 
         SmartMotorControllerConfig motorConfig = new SmartMotorControllerConfig(this)
                 .withMechanismCircumference(TongueConstants.MECHANISM_CIRCUMFERENCE)
@@ -56,7 +58,7 @@ public class TongueSubsystem extends SubsystemBase {
                 .withFeedforward(TongueConstants.FEEDFORWARD)
                 .withControlMode(ControlMode.CLOSED_LOOP);
 
-        m_smartMotorController = new SparkWrapper(m_motor, DCMotor.getNEO(1), motorConfig);
+        m_smartMotorController = new NovaWrapper(m_motor, DCMotor.getNEO(1), motorConfig);
 
         MechanismPositionConfig robotToMechanism = new MechanismPositionConfig()
                 .withMaxRobotHeight(MechanismPositionConstants.ROBOT_MAX_HEIGHT)

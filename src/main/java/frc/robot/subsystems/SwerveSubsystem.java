@@ -879,21 +879,25 @@ public class SwerveSubsystem extends SubsystemBase {
         });
 
         // Only if is limelight 4, add MT1 yaw measurement to the estimator
-        if (isLL4) {
-            Optional<PoseEstimate> visionEstimateMt1 = Optional.of(poseEstimateMt1).get().getPoseEstimate();
+        // if (isLL4) {
+        // Optional<PoseEstimate> visionEstimateMt1 =
+        // Optional.of(poseEstimateMt1).get().getPoseEstimate();
 
-            // If the pose is present
-            visionEstimateMt1.ifPresent((limelight.networktables.PoseEstimate poseEstimate) -> {
-                // And we see >1 tags and robot rotates <2 rotations per second
-                if (poseEstimate.tagCount > 1
-                        && Math.abs(
-                                Units.radiansToRotations(swerveDrive.getRobotVelocity().omegaRadiansPerSecond)) < 2) {
-                    // Add it to the pose estimator.
-                    swerveDrive.addVisionMeasurement(poseEstimate.pose.toPose2d(), poseEstimate.timestampSeconds,
-                            getEstimationStdDevsLimelightMT1(poseEstimate, isLL4));
-                }
-            });
-        }
+        // // If the pose is present
+        // visionEstimateMt1.ifPresent((limelight.networktables.PoseEstimate
+        // poseEstimate) -> {
+        // // And we see >1 tags and robot rotates <2 rotations per second
+        // if (poseEstimate.tagCount > 1
+        // && Math.abs(
+        // Units.radiansToRotations(swerveDrive.getRobotVelocity().omegaRadiansPerSecond))
+        // < 2) {
+        // // Add it to the pose estimator.
+        // swerveDrive.addVisionMeasurement(poseEstimate.pose.toPose2d(),
+        // poseEstimate.timestampSeconds,
+        // getEstimationStdDevsLimelightMT1(poseEstimate, isLL4));
+        // }
+        // });
+        // }
     }
 
     @Override

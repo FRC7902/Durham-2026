@@ -294,7 +294,7 @@ public final class Constants {
         public static final double REVERSE_SPEED = 0.5; // TODO
 
         public static final DCMotor MOTOR = DCMotor.getKrakenX60Foc(1);
-        public static final GearBox GEARBOX = GearBox.fromStages("24:18");
+        public static final GearBox GEARBOX = GearBox.fromStages("5:1", "24:15");
 
         public static final MotorMode IDLE_MODE = MotorMode.BRAKE;
 

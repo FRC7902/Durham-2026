@@ -52,7 +52,6 @@ public class TongueSubsystem extends SubsystemBase {
                 .withStatorCurrentLimit(TongueConstants.STATOR_CURRENT_LIMIT)
                 .withMotorInverted(false)
                 .withClosedLoopRampRate(TongueConstants.CLOSED_LOOP_RAMP_RATE)
-                .withOpenLoopRampRate(TongueConstants.OPEN_LOOP_RAMP_RATE)
                 .withFeedforward(TongueConstants.FEEDFORWARD)
                 .withControlMode(ControlMode.CLOSED_LOOP);
 

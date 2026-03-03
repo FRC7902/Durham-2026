@@ -360,7 +360,6 @@ public final class Constants {
             public static final LinearAcceleration MAX_ACCELERATION = MetersPerSecondPerSecond.of(0.5); // TODO
 
             public static final Time CLOSED_LOOP_RAMP_RATE = Seconds.of(0.25); // TODO
-            public static final Time OPEN_LOOP_RAMP_RATE = Seconds.of(0.25); // TODO
 
             public static final Current STATOR_CURRENT_LIMIT = Amps.of(40); // TODO
 

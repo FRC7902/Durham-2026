@@ -48,7 +48,8 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
 
     public static final class SwerveConstants {
-        public static final double MAX_SPEED = Units.feetToMeters(14.5); // TODO
+        public static final double MAX_SPEED = Units.feetToMeters(16); // TODO: Try increasing this to see if it does
+                                                                       // anything
 
         public static final double AUTO_AIM_VELOCITY_COMPENSATION_FACTOR = 1.5; // TODO
         public static final Angle AUTO_AIM_ANGLE_TARGET_ERROR = Degrees.of(5); // TODO

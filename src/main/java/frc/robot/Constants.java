@@ -288,7 +288,7 @@ public final class Constants {
 
     public static final class FeederConstants {
         public static final int MOTOR_CAN_ID = 23;
-        public static final int BEAM_BREAK_DIO_PORT = 0; // TODO
+        public static final int BEAM_BREAK_DIO_PORT = 2; // TODO
 
         public static final AngularVelocity FEEDER_SPEED = RPM.of(1000); // TODO
         public static final AngularVelocity REVERSE_SPEED = RPM.of(-1000); // TODO

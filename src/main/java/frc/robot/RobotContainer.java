@@ -413,7 +413,7 @@ public class RobotContainer {
         return m_shooterSubsystem.startFlywheelDefaultRPM();
     }
 
-    public void checkLinearIntakePosition() {
+    public void calibrateLinearIntakePosition() {
         if (m_linearIntakeSubsystem.getExtendedLimitSwitch()) {
             CommandScheduler.getInstance().schedule(m_linearIntakeSubsystem.setEncoderPositionExtended());
         } else if (m_linearIntakeSubsystem.getRetractedLimitSwitch()) {

@@ -125,7 +125,7 @@ public class LinearIntakeSubsystem extends SubsystemBase {
     }
 
     public Command setPosition(Distance position) {
-        return m_linearIntake.setHeight(position);
+        return m_linearIntake.runTo(position, LinearIntakeConstants.POSITION_TARGET_ERROR);
     }
 
     public Distance getPosition() {

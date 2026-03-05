@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -410,6 +411,14 @@ public class RobotContainer {
      */
     public Command startFlywheelDefaultRPM() {
         return m_shooterSubsystem.startFlywheelDefaultRPM();
+    }
+
+    public void checkLinearIntakePosition() {
+        if (m_linearIntakeSubsystem.getExtendedLimitSwitch()) {
+            CommandScheduler.getInstance().schedule(m_linearIntakeSubsystem.setEncoderPositionExtended());
+        } else if (m_linearIntakeSubsystem.getRetractedLimitSwitch()) {
+            CommandScheduler.getInstance().schedule(m_linearIntakeSubsystem.setEncoderPositionRetracted());
+        }
     }
 
     public void updateLocalization() {

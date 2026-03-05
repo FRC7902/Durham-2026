@@ -106,15 +106,8 @@ public class LinearIntakeSubsystem extends SubsystemBase {
         m_extendedTrigger = new Trigger(this::getExtendedLimitSwitch);
         m_retractedTrigger = new Trigger(this::getRetractedLimitSwitch);
 
-        m_extendedTrigger.onTrue(handleExtendedLimitSwitch());
-        m_retractedTrigger.onTrue(handleRetractedLimitSwitch());
-
-        // TODO: Call this in robot init
-        if (getExtendedLimitSwitch()) {
-            handleExtendedLimitSwitch();
-        } else if (getRetractedLimitSwitch()) {
-            handleRetractedLimitSwitch();
-        }
+        m_extendedTrigger.onTrue(setEncoderPositionExtended());
+        m_retractedTrigger.onTrue(setEncoderPositionRetracted());
     }
 
     public Command sysId() {
@@ -201,11 +194,11 @@ public class LinearIntakeSubsystem extends SubsystemBase {
         return m_retractedLimitSwitch.get();
     }
 
-    public Command handleExtendedLimitSwitch() {
+    public Command setEncoderPositionExtended() {
         return this.runOnce(() -> m_smartMotorController.setEncoderPosition(LinearIntakeConstants.EXTENDED_POSITION));
     }
 
-    public Command handleRetractedLimitSwitch() {
+    public Command setEncoderPositionRetracted() {
         return this.runOnce(
                 () -> m_smartMotorController.setEncoderPosition(LinearIntakeConstants.RETRACTED_POSITION));
     }

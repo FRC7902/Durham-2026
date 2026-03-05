@@ -37,9 +37,12 @@ import frc.robot.subsystems.SwerveSubsystem.Zone;
 import frc.robot.subsystems.intake.IntakeRollerSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem.LinearIntakePosition;
+import limelight.Limelight;
+import limelight.networktables.LimelightSettings.ImuMode;
 import swervelib.SwerveInputStream;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnField;
+import frc.robot.utils.LimelightWrapper;
 
 public class RobotContainer {
     final CommandPS5Controller m_driverController = new CommandPS5Controller(Constants.DRIVER_CONTROLLER_PORT);
@@ -54,6 +57,9 @@ public class RobotContainer {
             "swerve"));
 
     private final SimSubsystem m_simSubsystem;
+
+    private final LimelightWrapper m_limelightA;
+    private final LimelightWrapper m_limelightC;
 
     // Choreo
     private final AutoFactory autoFactory = new AutoFactory(
@@ -154,6 +160,12 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
 
+        m_limelightA = new LimelightWrapper("limelight-a", true);
+        m_limelightC = new LimelightWrapper("limelight-c", false);
+
+        // Only do this for LL4, so we use heading readings from MT1 from 3G?
+        m_limelightA.getSettings().withImuMode(ImuMode.ExternalImu).save();
+
         configureBindings();
     }
 
@@ -211,7 +223,7 @@ public class RobotContainer {
 
         m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
-        m_driverController.options().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyroWithAlliance)));
+        m_driverController.options().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyro)));
         m_driverController.create().whileTrue(m_swerveSubsystem.centerModulesCommand());
 
         // Auto-aim (swerve heading with calculated hood angle) and shoot
@@ -394,5 +406,10 @@ public class RobotContainer {
      */
     public Command startFlywheelDefaultRPM() {
         return m_shooterSubsystem.startFlywheelDefaultRPM();
+    }
+
+    public void updateLocalization() {
+        m_limelightA.updateLocalization(m_swerveSubsystem.getSwerveDrive());
+        m_limelightC.updateLocalization(m_swerveSubsystem.getSwerveDrive());
     }
 }

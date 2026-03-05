@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
 
 import java.io.File;
 import java.util.Arrays;
@@ -15,14 +16,20 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import choreo.trajectory.SwerveSample;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -33,7 +40,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.FieldConstants;
+import limelight.Limelight;
+import limelight.networktables.PoseEstimate;
+import limelight.networktables.AngularVelocity3d;
+import limelight.networktables.LimelightSettings.LEDMode;
+import limelight.networktables.Orientation3d;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -47,6 +60,9 @@ public class SwerveSubsystem extends SubsystemBase {
      * Swerve drive object.
      */
     private final SwerveDrive swerveDrive;
+
+    private PoseEstimate poseEstimateMt2;
+    private PoseEstimate poseEstimateMt1;
 
     private Rotation2d autoAimTargetRotation = new Rotation2d();
 

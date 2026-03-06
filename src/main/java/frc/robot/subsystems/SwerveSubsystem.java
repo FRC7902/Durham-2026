@@ -751,7 +751,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (Constants.TELEMETRY) {
+        if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
             SmartDashboard.putNumber("autoAimHeading", getAutoAimHeading().getDegrees());
             SmartDashboard.putNumber("currentHeading", getHeading().getDegrees());
         }

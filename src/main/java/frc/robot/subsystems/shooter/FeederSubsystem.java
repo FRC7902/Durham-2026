@@ -21,6 +21,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -192,7 +193,7 @@ public class FeederSubsystem extends SubsystemBase {
     public void periodic() {
         m_feeder.updateTelemetry();
 
-        if (Constants.TELEMETRY) {
+        if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
             SmartDashboard.putNumber("FeederMech/linearVelocity (fps)", getLinearVelocity().in(FeetPerSecond));
             SmartDashboard.putNumber("FeederMech/velocity (RPM)", getAngularVelocity().in(RPM));
             SmartDashboard.putNumber("FeederMech/setpoint (RPM)",

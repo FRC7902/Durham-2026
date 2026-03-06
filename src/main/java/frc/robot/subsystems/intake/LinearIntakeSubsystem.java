@@ -17,6 +17,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -213,7 +214,7 @@ public class LinearIntakeSubsystem extends SubsystemBase {
     public void periodic() {
         m_linearIntake.updateTelemetry();
 
-        if (Constants.TELEMETRY) {
+        if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
             SmartDashboard.putNumber("LinearIntakeMech/position (m)", getPosition().in(Meters));
             SmartDashboard.putNumber("LinearIntakeMech/setpoint (m)",
                     getSetpoint().map(pos -> pos.in(Meters)).orElse(Double.NaN));

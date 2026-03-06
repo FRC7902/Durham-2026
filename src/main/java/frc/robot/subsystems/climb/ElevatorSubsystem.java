@@ -22,6 +22,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -206,7 +207,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void periodic() {
         m_climb.updateTelemetry();
 
-        if (Constants.TELEMETRY) {
+        if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
             SmartDashboard.putNumber("Elevator/position (m)", m_climb.getHeight().in(Meters));
             SmartDashboard.putNumber("Elevator/setpoint (m)",
                     getSetpoint().map(pos -> pos.in(Meters)).orElse(Double.NaN));

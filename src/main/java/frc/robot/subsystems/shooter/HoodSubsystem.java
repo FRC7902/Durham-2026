@@ -19,6 +19,7 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -240,7 +241,7 @@ public class HoodSubsystem extends SubsystemBase {
     public void periodic() {
         m_hood.updateTelemetry();
 
-        if (Constants.TELEMETRY) {
+        if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
             SmartDashboard.putNumber("HoodMech/angle (deg)", getAngle().in(Degrees));
             SmartDashboard.putNumber("HoodMech/setpoint (deg)",
                     getAngleSetpoint().map(angle -> angle.in(Degrees)).orElse(Double.NaN));

@@ -37,6 +37,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        // Check the linear intake position and set the encoder position accordingly
+        m_robotContainer.calibrateLinearIntakePosition();
     }
 
     @Override
@@ -55,6 +57,9 @@ public class Robot extends TimedRobot {
 
         // Start the flywheel at the default RPM when teleop starts
         CommandScheduler.getInstance().schedule(m_robotContainer.startFlywheelDefaultRPM());
+
+        // Check the linear intake position and set the encoder position accordingly
+        m_robotContainer.calibrateLinearIntakePosition();
     }
 
     @Override

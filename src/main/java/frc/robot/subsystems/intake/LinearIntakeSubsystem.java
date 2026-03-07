@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
@@ -159,6 +160,14 @@ public class LinearIntakeSubsystem extends SubsystemBase {
 
     public Command fullyRetract() {
         return setPosition(LinearIntakeConstants.RETRACTED_POSITION);
+    }
+
+    public Command shuffle() {
+        return Commands.sequence(
+                setPosition(LinearIntakeConstants.SHUFFLE_POSITION),
+                Commands.waitSeconds(0.25),
+                retract(),
+                Commands.waitSeconds(0.25)).repeatedly();
     }
 
     public Command set(double dutycycle) {

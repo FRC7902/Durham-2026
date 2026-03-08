@@ -210,7 +210,7 @@ public final class Constants {
         public static final AngularVelocity DEFAULT_VELOCITY = RPM.of(3500);;
 
         public static final AngularVelocity RPM_TARGET_ERROR = RPM.of(100); // ~2% of ALLIANCE_SHOOTING_VELOCITY
-        public static final Time AT_RPM_DEBOUNCE_TIME = Seconds.of(0.2); // TODO
+        public static final Time AT_RPM_DEBOUNCE_TIME = Seconds.of(0.5); // TODO
 
         public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(-5.087),
                 Inches.of(0),
@@ -245,10 +245,10 @@ public final class Constants {
         public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(6000); // TODO
         public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(0.314); // TODO
 
-        public static final Angle SOFT_LIMIT_MIN = Degrees.of(5.5); // TODO
-        public static final Angle SOFT_LIMIT_MAX = Degrees.of(43); // TODO
-        public static final Angle HARD_LIMIT_MIN = Degrees.of(5.5);
-        public static final Angle HARD_LIMIT_MAX = Degrees.of(43);
+        public static final Angle SOFT_LIMIT_MIN = Degrees.of(0);
+        public static final Angle SOFT_LIMIT_MAX = Degrees.of(42);
+        public static final Angle HARD_LIMIT_MIN = Degrees.of(0);
+        public static final Angle HARD_LIMIT_MAX = Degrees.of(42.1875);
 
         public static final Angle DEFAULT_ANGLE = Degrees.of(8);
 
@@ -275,23 +275,23 @@ public final class Constants {
                 .ofEntries(
                         // 4000 RPM
                         Map.entry(FlywheelSpeedZone.ZONE_1, Map.ofEntries(
-                                Map.entry(Meter.of(1.6698), Degrees.of(14.0)),
-                                Map.entry(Meter.of(1.9717), Degrees.of(17.5)),
-                                Map.entry(Meter.of(2.19499), Degrees.of(20.0)),
-                                Map.entry(Meter.of(2.4258), Degrees.of(22.5)),
-                                Map.entry(Meter.of(2.62955), Degrees.of(24.0)),
-                                Map.entry(Meter.of(2.802), Degrees.of(27.5)),
-                                Map.entry(Meter.of(2.9945), Degrees.of(30.0)),
-                                Map.entry(Meter.of(3.531), Degrees.of(36.0)),
-                                Map.entry(Meter.of(3.2396), Degrees.of(33.0))
+                                Map.entry(Meter.of(1.6698), Degrees.of(14.0 - 5.5)),
+                                Map.entry(Meter.of(1.9717), Degrees.of(17.5 - 5.5)),
+                                Map.entry(Meter.of(2.19499), Degrees.of(20.0 - 5.5)),
+                                Map.entry(Meter.of(2.4258), Degrees.of(22.5 - 5.5)),
+                                Map.entry(Meter.of(2.62955), Degrees.of(24.0 - 5.5)),
+                                Map.entry(Meter.of(2.802), Degrees.of(27.5 - 5.5)),
+                                Map.entry(Meter.of(2.9945), Degrees.of(30.0 - 5.5)),
+                                Map.entry(Meter.of(3.531), Degrees.of(36.0 - 5.5)),
+                                Map.entry(Meter.of(3.2396), Degrees.of(33.0 - 5.5))
 
                         )),
                         // 4775 RPM
                         Map.entry(FlywheelSpeedZone.ZONE_2, Map.ofEntries(
-                                Map.entry(Meter.of(3.6212), Degrees.of(24.5)),
-                                Map.entry(Meter.of(4.0396), Degrees.of(27.2)),
-                                Map.entry(Meter.of(4.3405), Degrees.of(30.0)),
-                                Map.entry(Meter.of(4.660), Degrees.of(34.0)))));
+                                Map.entry(Meter.of(3.6212), Degrees.of(24.5 - 5.5)),
+                                Map.entry(Meter.of(4.0396), Degrees.of(27.2 - 5.5)),
+                                Map.entry(Meter.of(4.3405), Degrees.of(30.0 - 5.5)),
+                                Map.entry(Meter.of(4.660), Degrees.of(34.0 - 5.5)))));
 
         public static final Map<FlywheelSpeedZone, AngularVelocity> SHOOTER_MIN_DISTANCE_TO_FLYWHEEL_RPM = Map
                 .ofEntries(

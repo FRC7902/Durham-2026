@@ -55,7 +55,8 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
 
     public static final class SwerveConstants {
-        public static final double MAX_SPEED = Units.feetToMeters(16); // TODO: Try increasing this to see if it does
+        public static final double MAX_SPEED = Units.feetToMeters(16); // TODO: Try increasing this to see if it
+                                                                       // does
                                                                        // anything
 
         public static final double AUTO_AIM_VELOCITY_COMPENSATION_FACTOR = 1.2; // TODO
@@ -71,11 +72,13 @@ public final class Constants {
         public static final Translation2d RED_LEFT_FEEDING_TARGET = new Translation2d(14.473375, 2.01725);
         public static final Translation2d RED_RIGHT_FEEDING_TARGET = new Translation2d(14.473375, 6.05175);
 
-        public static final Pose2d RED_LEFT_TOWER_CLIMB_POS = new Pose2d(15.105, 3.885, new Rotation2d(Degree.of(180)));
+        public static final Pose2d RED_LEFT_TOWER_CLIMB_POS = new Pose2d(15.105, 3.885,
+                new Rotation2d(Degree.of(180)));
         public static final Pose2d RED_RIGHT_TOWER_CLIMB_POS = new Pose2d(15.105, 4.764,
                 new Rotation2d(Degree.of(180)));
 
-        public static final Pose2d BLUE_LEFT_TOWER_CLIMB_POS = new Pose2d(1.428, 4.175, new Rotation2d(Degree.of(0)));
+        public static final Pose2d BLUE_LEFT_TOWER_CLIMB_POS = new Pose2d(1.428, 4.175,
+                new Rotation2d(Degree.of(0)));
         public static final Pose2d BLUE_RIGHT_TOWER_CLIMB_POS = new Pose2d(1.428, 3.317,
                 new Rotation2d(Degree.of(0)));
 
@@ -222,7 +225,8 @@ public final class Constants {
         public static final int ENCODER_CAN_ID = 6;
 
         public static final DCMotor MOTOR = DCMotor.getKrakenX44Foc(1);
-        public static final GearBox GEARBOX = GearBox.fromReductionStages(80.0 / 14.0, 24.0 / 18.0, 170.0 / 10.0);
+        public static final GearBox GEARBOX = GearBox.fromReductionStages(80.0 / 14.0, 24.0 / 18.0,
+                170.0 / 10.0);
 
         public static final Current STATOR_CURRENT_LIMIT_AMPS = Amps.of(40); // TODO
 
@@ -298,14 +302,17 @@ public final class Constants {
                         Map.entry(FlywheelSpeedZone.ZONE_1, RPM.of(4000)),
                         Map.entry(FlywheelSpeedZone.ZONE_2, RPM.of(4775)));
 
-        public static final Map<Distance, FlywheelSpeedZone> MIN_DISTANCE_TO_FLYWHEEL_SPEED_ZONE = Map.ofEntries(
-                Map.entry(Meters.of(0), FlywheelSpeedZone.ZONE_1),
-                Map.entry(Meters.of(3.6212), FlywheelSpeedZone.ZONE_2));
+        public static final Map<Distance, FlywheelSpeedZone> MIN_DISTANCE_TO_FLYWHEEL_SPEED_ZONE = Map
+                .ofEntries(
+                        Map.entry(Meters.of(0), FlywheelSpeedZone.ZONE_1),
+                        Map.entry(Meters.of(3.6212), FlywheelSpeedZone.ZONE_2));
 
         public static final Map<FlywheelSpeedZone, InterpolatingDoubleTreeMap> SHOOTER_DISTANCE_TO_HOOD_ANGLE_INTERPOLATION = Map
                 .ofEntries(
-                        Map.entry(FlywheelSpeedZone.ZONE_1, createHoodInterpolationMap(FlywheelSpeedZone.ZONE_1)),
-                        Map.entry(FlywheelSpeedZone.ZONE_2, createHoodInterpolationMap(FlywheelSpeedZone.ZONE_2)));
+                        Map.entry(FlywheelSpeedZone.ZONE_1,
+                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_1)),
+                        Map.entry(FlywheelSpeedZone.ZONE_2,
+                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_2)));
 
         private static InterpolatingDoubleTreeMap createHoodInterpolationMap(FlywheelSpeedZone zone) {
             InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
@@ -375,7 +382,8 @@ public final class Constants {
             public static final DCMotor LEADER_MOTOR = DCMotor.getFalcon500Foc(1);
             public static final DCMotor FOLLOWER_MOTOR = DCMotor.getFalcon500Foc(1);
 
-            public static final MechanismGearing GEARBOX = new MechanismGearing(GearBox.fromReductionStages(12));
+            public static final MechanismGearing GEARBOX = new MechanismGearing(
+                    GearBox.fromReductionStages(12));
 
             public static final Distance CHAIN_PITCH = Inches.of(0.25);
             public static final int TOOTH_COUNT = 12;
@@ -420,7 +428,8 @@ public final class Constants {
         public static final class TongueConstants {
             public static final int MOTOR_CAN_ID = 9; // TODO
 
-            public static final Distance MECHANISM_CIRCUMFERENCE = Meters.of(Inches.of(0.25).in(Meters) * 22); // TODO
+            public static final Distance MECHANISM_CIRCUMFERENCE = Meters
+                    .of(Inches.of(0.25).in(Meters) * 22); // TODO
             public static final GearBox GEARBOX = GearBox.fromReductionStages(3, 4); // TODO
             public static final Mass MECHANISM_MASS = Pounds.of(16); // TODO
 
@@ -443,7 +452,8 @@ public final class Constants {
             public static final Distance HARD_LIMIT_MIN = Meters.of(0); // TODO
             public static final Distance HARD_LIMIT_MAX = Meters.of(3); // TODO
 
-            public static final Translation3d RELATIVE_POSITION = new Translation3d(Meters.of(-0.25), Meters.of(0),
+            public static final Translation3d RELATIVE_POSITION = new Translation3d(Meters.of(-0.25),
+                    Meters.of(0),
                     Meters.of(0.5)); // TODO
         }
     }

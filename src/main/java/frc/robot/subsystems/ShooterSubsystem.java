@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import java.util.function.Supplier;
 
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -86,6 +87,14 @@ public class ShooterSubsystem extends SubsystemBase {
         return Commands.parallel(
                 m_hoodSubsystem.setDefaultAngle(),
                 m_flywheelSubsystem.setDefaultRPM(),
+                new ConditionalCommand(m_feederSubsystem.feed(), m_feederSubsystem.stop(), this::isShooterReady)
+                        .repeatedly());
+    }
+
+    public Command shootWith(Angle angle, AngularVelocity RPM) {
+        return Commands.parallel(
+                m_hoodSubsystem.setAngle(angle),
+                m_flywheelSubsystem.setSpeed(RPM),
                 new ConditionalCommand(m_feederSubsystem.feed(), m_feederSubsystem.stop(), this::isShooterReady)
                         .repeatedly());
     }

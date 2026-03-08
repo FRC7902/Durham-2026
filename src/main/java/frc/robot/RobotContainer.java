@@ -75,6 +75,7 @@ public class RobotContainer {
             m_swerveSubsystem // The drive subsystem
     );
     private final AutoChooser autoChooser;
+    private final Autos m_autos;
 
     /**
      * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -157,7 +158,13 @@ public class RobotContainer {
         }
 
         autoChooser = new AutoChooser();
-        // autoChooser.addRoutine("routine1", this::routine1);
+        m_autos = new Autos(autoFactory, m_intakeRollerSubsystem, m_linearIntakeSubsystem, m_shooterSubsystem,
+                m_indexerSubsystem, m_hopperSubsystem, m_swerveSubsystem, autoAimHeadingX(),
+                autoAimHeadingY());
+
+        autoChooser.addCmd("Right Neutral Zone Auto", m_autos::rightAuto);
+        autoChooser.addCmd("Center Shoot Preload Auto", m_autos::shootPreloadAuto);
+
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
 

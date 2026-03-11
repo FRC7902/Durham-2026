@@ -152,7 +152,7 @@ public final class Constants {
             public static final Time CLOSED_LOOP_RAMP_RATE = Seconds.of(0.25);
             public static final Time OPEN_LOOP_RAMP_RATE = Seconds.of(0.25);
 
-            public static final Current STATOR_CURRENT_LIMIT = Amps.of(20);
+            public static final Current STATOR_CURRENT_LIMIT = Amps.of(40);
 
             public static final Distance SOFT_LIMIT_MIN = Meters.of(0);
             public static final Distance SOFT_LIMIT_MAX = Meters.of(0.33);
@@ -187,6 +187,7 @@ public final class Constants {
         public static final MomentOfInertia MOI = KilogramSquareMeters.of(0.0006438072);
 
         public static final Current STATOR_CURRENT_LIMIT_AMPS = Amps.of(80);
+        public static final Current SUPPLY_CURRENT_LIMIT_AMPS = Amps.of(40);
 
         public static final double PID_kP = 0.003; // TODO
         public static final double PID_kI = 0.0; // TODO

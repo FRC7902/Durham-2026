@@ -76,6 +76,7 @@ public class FlywheelSubsystem extends SubsystemBase {
                 .withIdleMode(FlywheelConstants.IDLE_MODE) // Keep spinning even if not powered
                 .withTelemetry("FlywheelMotor", Constants.TELEMETRY_VERBOSITY)
                 .withStatorCurrentLimit(FlywheelConstants.STATOR_CURRENT_LIMIT_AMPS)
+                .withSupplyCurrentLimit(FlywheelConstants.SUPPLY_CURRENT_LIMIT_AMPS)
                 .withMotorInverted(FlywheelConstants.LEADER_MOTOR_INVERTED)
                 .withClosedLoopRampRate(FlywheelConstants.CLOSED_LOOP_RAMP_RATE_SEC)
                 .withOpenLoopRampRate(FlywheelConstants.OPEN_LOOP_RAMP_RATE_SEC)

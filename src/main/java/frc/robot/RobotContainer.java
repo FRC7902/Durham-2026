@@ -75,6 +75,7 @@ public class RobotContainer {
             m_swerveSubsystem // The drive subsystem
     );
     private final AutoChooser autoChooser;
+    private final Autos m_autos;
 
     /**
      * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -157,7 +158,14 @@ public class RobotContainer {
         }
 
         autoChooser = new AutoChooser();
-        // autoChooser.addRoutine("routine1", this::routine1);
+        m_autos = new Autos(autoFactory, m_intakeRollerSubsystem, m_linearIntakeSubsystem, m_shooterSubsystem,
+                m_indexerSubsystem, m_hopperSubsystem, m_swerveSubsystem, autoAimHeadingX(),
+                autoAimHeadingY());
+
+        autoChooser.addCmd("Right Neutral Zone Auto", m_autos::rightAuto);
+        // autoChooser.addCmd("Left Neutral Zone Auto", m_autos::leftAuto);
+        autoChooser.addCmd("Center Shoot Preload Auto", m_autos::shootPreloadAuto);
+
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
 
@@ -224,7 +232,7 @@ public class RobotContainer {
 
         m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
-        m_driverController.options().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyro)));
+        m_driverController.options().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyroWithAlliance)));
         m_driverController.create().whileTrue(m_swerveSubsystem.centerModulesCommand());
 
         // Auto-aim (swerve heading with calculated hood angle) and shoot
@@ -429,5 +437,19 @@ public class RobotContainer {
     public void updateLocalization() {
         m_limelightA.updateLocalization(m_swerveSubsystem.getSwerveDrive());
         m_limelightC.updateLocalization(m_swerveSubsystem.getSwerveDrive());
+    }
+
+    public Command stopAllSubsystems() {
+        return Commands.parallel(
+                m_swerveSubsystem.stop(),
+                m_shooterSubsystem.stopShooting(),
+                m_indexerSubsystem.stop(),
+                m_hopperSubsystem.retract(),
+                m_intakeRollerSubsystem.stop(),
+                m_linearIntakeSubsystem.retract());
+    }
+
+    public void zeroGyroWithAlliance() {
+        m_swerveSubsystem.zeroGyroWithAlliance();
     }
 }

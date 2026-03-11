@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import java.util.function.Supplier;
 
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -90,6 +91,14 @@ public class ShooterSubsystem extends SubsystemBase {
                         .repeatedly());
     }
 
+    public Command shootWith(Angle angle, AngularVelocity RPM) {
+        return Commands.parallel(
+                m_hoodSubsystem.setAngle(angle),
+                m_flywheelSubsystem.setSpeed(RPM),
+                new ConditionalCommand(m_feederSubsystem.feed(), m_feederSubsystem.stop(), this::isShooterReady)
+                        .repeatedly());
+    }
+
     /**
      * Stops the shooting process by lowering the hood, setting the flywheel to its
      * default RPM, and stopping the feeder.
@@ -101,6 +110,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 m_hoodSubsystem.lowerHood(),
                 m_flywheelSubsystem.setDefaultRPM(),
                 Commands.sequence(
+                        m_feederSubsystem.stop(),
                         Commands.deadline(
                                 Commands.waitSeconds(0.5),
                                 m_feederSubsystem.reverse()),

@@ -39,6 +39,12 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         // Check the linear intake position and set the encoder position accordingly
         m_robotContainer.calibrateLinearIntakePosition();
+
+        // Zero gyro (shooter must face away from driver, towards opponent wall)
+        m_robotContainer.zeroGyroWithAlliance();
+
+        // Start the flywheel at the default RPM when teleop starts
+        CommandScheduler.getInstance().schedule(m_robotContainer.startFlywheelDefaultRPM());
     }
 
     @Override
@@ -54,6 +60,8 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+
+        CommandScheduler.getInstance().schedule(m_robotContainer.stopAllSubsystems());
 
         // Start the flywheel at the default RPM when teleop starts
         CommandScheduler.getInstance().schedule(m_robotContainer.startFlywheelDefaultRPM());

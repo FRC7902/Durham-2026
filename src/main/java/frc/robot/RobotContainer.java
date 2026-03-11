@@ -162,7 +162,7 @@ public class RobotContainer {
                 m_indexerSubsystem, m_hopperSubsystem, m_swerveSubsystem, autoAimHeadingX(),
                 autoAimHeadingY());
 
-        autoChooser.addCmd("Right Neutral Zone Auto", m_autos::rightAuto);
+        // autoChooser.addCmd("Right Neutral Zone Auto", m_autos::rightAuto);
         // autoChooser.addCmd("Left Neutral Zone Auto", m_autos::leftAuto);
         autoChooser.addCmd("Center Shoot Preload Auto", m_autos::shootPreloadAuto);
 

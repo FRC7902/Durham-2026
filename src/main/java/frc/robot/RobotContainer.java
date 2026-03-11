@@ -163,6 +163,7 @@ public class RobotContainer {
                 autoAimHeadingY());
 
         autoChooser.addCmd("Right Neutral Zone Auto", m_autos::rightAuto);
+        autoChooser.addCmd("Left Neutral Zone Auto", m_autos::leftAuto);
         autoChooser.addCmd("Center Shoot Preload Auto", m_autos::shootPreloadAuto);
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -231,7 +232,7 @@ public class RobotContainer {
 
         m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
-        m_driverController.options().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyro)));
+        m_driverController.options().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyroWithAlliance)));
         m_driverController.create().whileTrue(m_swerveSubsystem.centerModulesCommand());
 
         // Auto-aim (swerve heading with calculated hood angle) and shoot
@@ -446,5 +447,9 @@ public class RobotContainer {
                 m_hopperSubsystem.retract(),
                 m_intakeRollerSubsystem.stop(),
                 m_linearIntakeSubsystem.retract());
+    }
+
+    public void zeroGyroWithAlliance() {
+        m_swerveSubsystem.zeroGyroWithAlliance();
     }
 }

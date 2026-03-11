@@ -143,16 +143,18 @@ public class Autos {
                                 () -> m_swerveSubsystem.getDistanceToTarget(true),
                                 m_swerveSubsystem::isAutoAimOnTarget)));
     }
-
+    
     public Command shootPreloadAuto() {
         return Commands.sequence(
                 m_autoFactory.resetOdometry("ShootPreloadAuto"),
                 m_autoFactory.trajectoryCmd("ShootPreloadAuto"),
                 Commands.waitSeconds(3),
+                m_swerveSubsystem.stop(),
                 Commands.parallel(
                         m_indexerSubsystem.run(),
                         m_intakeRollerSubsystem.intake(),
-                        m_shooterSubsystem.shootWith(Degrees.of(1.5),
-                                FlywheelConstants.DEFAULT_VELOCITY)));
+                        m_shooterSubsystem.aimAndShoot(
+                                () -> m_swerveSubsystem.getDistanceToTarget(true),
+                                m_swerveSubsystem::isAutoAimOnTarget)));
     }
 }

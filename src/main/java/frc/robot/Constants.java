@@ -67,10 +67,10 @@ public final class Constants {
         // still be considered "in the alliance zone" for the purposes of auto-aiming.
         public static final double ALLIANCE_ZONE_TOLERANCE_TO_STARTING_LINE = 0.1281386;
 
-        public static final Translation2d BLUE_LEFT_FEEDING_TARGET = new Translation2d(2.067625, 6.05175);
-        public static final Translation2d BLUE_RIGHT_FEEDING_TARGET = new Translation2d(2.067625, 2.01725);
-        public static final Translation2d RED_LEFT_FEEDING_TARGET = new Translation2d(14.473375, 2.01725);
-        public static final Translation2d RED_RIGHT_FEEDING_TARGET = new Translation2d(14.473375, 6.05175);
+        public static final Translation2d BLUE_LEFT_FEEDING_TARGET = new Translation2d(0.567625, 6.05175);
+        public static final Translation2d BLUE_RIGHT_FEEDING_TARGET = new Translation2d(0.567625, 2.01725);
+        public static final Translation2d RED_LEFT_FEEDING_TARGET = new Translation2d(15.973375, 2.01725);
+        public static final Translation2d RED_RIGHT_FEEDING_TARGET = new Translation2d(15.973375, 6.05175);
 
         public static final Pose2d RED_LEFT_TOWER_CLIMB_POS = new Pose2d(15.105, 3.885,
                 new Rotation2d(Degree.of(180)));

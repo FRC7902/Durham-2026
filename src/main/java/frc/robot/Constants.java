@@ -157,9 +157,9 @@ public final class Constants {
             public static final Current STATOR_CURRENT_LIMIT = Amps.of(40);
 
             public static final Distance SOFT_LIMIT_MIN = Meters.of(0);
-            public static final Distance SOFT_LIMIT_MAX = Meters.of(0.33);
+            public static final Distance SOFT_LIMIT_MAX = Meters.of(0.31);
             public static final Distance HARD_LIMIT_MIN = Meters.of(0);
-            public static final Distance HARD_LIMIT_MAX = Meters.of(0.33); // TODO
+            public static final Distance HARD_LIMIT_MAX = Meters.of(0.31);
 
             public static final Distance EXTENDED_POSITION = SOFT_LIMIT_MAX;
             public static final Distance MIDPOINT_POSITION = Meters.of(0.10);

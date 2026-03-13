@@ -364,52 +364,52 @@ public class RobotContainer {
                                 SwerveConstants.DRIVE_TO_POSE_ROTATION_MAX_ACCELERATION_RAD)));
 
         // Auto-align to left side tower for climbing
-        m_driverController.povLeft().whileTrue(
-                Commands.sequence(
-                        new InstantCommand(
-                                () -> m_swerveSubsystem.setSelectedClimbPose(true)),
-                        Commands.runEnd(
-                                () -> driveAngularVelocity.driveToPoseEnabled(true),
-                                () -> driveAngularVelocity.driveToPoseEnabled(false))));
+        // m_driverController.povLeft().whileTrue(
+        //         Commands.sequence(
+        //                 new InstantCommand(
+        //                         () -> m_swerveSubsystem.setSelectedClimbPose(true)),
+        //                 Commands.runEnd(
+        //                         () -> driveAngularVelocity.driveToPoseEnabled(true),
+        //                         () -> driveAngularVelocity.driveToPoseEnabled(false))));
 
         // Auto-align to right side tower for climbing
-        m_driverController.povRight().whileTrue(
-                Commands.sequence(
-                        new InstantCommand(
-                                () -> m_swerveSubsystem.setSelectedClimbPose(false)),
-                        Commands.runEnd(
-                                () -> driveAngularVelocity.driveToPoseEnabled(true),
-                                () -> driveAngularVelocity.driveToPoseEnabled(false))));
+        // m_driverController.povRight().whileTrue(
+        //         Commands.sequence(
+        //                 new InstantCommand(
+        //                         () -> m_swerveSubsystem.setSelectedClimbPose(false)),
+        //                 Commands.runEnd(
+        //                         () -> driveAngularVelocity.driveToPoseEnabled(true),
+        //                         () -> driveAngularVelocity.driveToPoseEnabled(false))));
 
         // Auto-traverse the trench through left side
-        m_driverController.L3().whileTrue(
-                new ConditionalCommand(
-                        selectRedLeftTrenchTraversal,
-                        selectBlueLeftTrenchTraversal,
-                        m_swerveSubsystem::isRedAlliance));
+        // m_driverController.L3().whileTrue(
+        //         new ConditionalCommand(
+        //                 selectRedLeftTrenchTraversal,
+        //                 selectBlueLeftTrenchTraversal,
+        //                 m_swerveSubsystem::isRedAlliance));
         // Stop shooting to prevent hood from hitting trench
-        m_driverController.L3().onTrue(
-                new ConditionalCommand(
-                        Commands.sequence( // If intake is active, continue storing fuel
-                                m_shooterSubsystem.stopShooting(),
-                                m_shooterSubsystem.storeFuel()),
-                        m_shooterSubsystem.stopShooting(),
-                        m_driverController.L2()::getAsBoolean));
+        // m_driverController.L3().onTrue(
+        //         new ConditionalCommand(
+        //                 Commands.sequence( // If intake is active, continue storing fuel
+        //                         m_shooterSubsystem.stopShooting(),
+        //                         m_shooterSubsystem.storeFuel()),
+        //                 m_shooterSubsystem.stopShooting(),
+        //                 m_driverController.L2()::getAsBoolean));
 
         // Auto-traverse the trench through right side
-        m_driverController.R3().whileTrue(
-                new ConditionalCommand(
-                        selectRedRightTrenchTraversal,
-                        selectBlueRightTrenchTraversal,
-                        m_swerveSubsystem::isRedAlliance));
+        // m_driverController.R3().whileTrue(
+        //         new ConditionalCommand(
+        //                 selectRedRightTrenchTraversal,
+        //                 selectBlueRightTrenchTraversal,
+        //                 m_swerveSubsystem::isRedAlliance));
         // Stop shooting to prevent hood from hitting trench
-        m_driverController.R3().onTrue(
-                new ConditionalCommand(
-                        Commands.sequence( // If intake is active, continue storing fuel
-                                m_shooterSubsystem.stopShooting(),
-                                m_shooterSubsystem.storeFuel()),
-                        m_shooterSubsystem.stopShooting(),
-                        m_driverController.L2()::getAsBoolean));
+        // m_driverController.R3().onTrue(
+        //         new ConditionalCommand(
+        //                 Commands.sequence( // If intake is active, continue storing fuel
+        //                         m_shooterSubsystem.stopShooting(),
+        //                         m_shooterSubsystem.storeFuel()),
+        //                 m_shooterSubsystem.stopShooting(),
+        //                 m_driverController.L2()::getAsBoolean));
     }
 
     /**

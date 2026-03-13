@@ -146,7 +146,7 @@ public final class Constants {
             public static final double SIM_PID_kD = 0.0; // TODO
 
             public static final ElevatorFeedforward FEEDFORWARD = new ElevatorFeedforward(0.32176, -0.04,
-                    0.6148, 0.021608); // TODO: Set kg to negative?
+                    0.6148, 0.021608); // TODO: Tune this via SysID
 
             public static final LinearVelocity MAX_VELOCITY = MetersPerSecond.of(2); // TODO
             public static final LinearAcceleration MAX_ACCELERATION = MetersPerSecondPerSecond.of(6.5); // TODO

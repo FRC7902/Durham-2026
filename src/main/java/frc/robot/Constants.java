@@ -329,8 +329,8 @@ public final class Constants {
         public static final int MOTOR_CAN_ID = 23;
         public static final int BEAM_BREAK_DIO_PORT = 2; // TODO
 
-        public static final AngularVelocity FEEDER_SPEED = RPM.of(2000); // TODO
-        public static final AngularVelocity REVERSE_SPEED = RPM.of(-2000); // TODO
+        public static final AngularVelocity FEEDER_SPEED = RPM.of(725);
+        public static final AngularVelocity REVERSE_SPEED = RPM.of(-725);
 
         public static final DCMotor MOTOR = DCMotor.getKrakenX60Foc(1);
         public static final GearBox GEARBOX = GearBox.fromStages("5:1", "24:15");
@@ -346,7 +346,7 @@ public final class Constants {
         public static final Current STATOR_CURRENT_LIMIT_AMPS = Amps.of(60);
         public static final Current SUPPLY_CURRENT_LIMIT_AMPS = Amps.of(70);
 
-        public static final double PID_kP = 1.0; // TODO
+        public static final double PID_kP = 0.0; // TODO
         public static final double PID_kI = 0.0; // TODO
         public static final double PID_kD = 0.0; // TODO
 
@@ -354,16 +354,16 @@ public final class Constants {
         public static final double SIM_PID_kI = 0.0; // TODO
         public static final double SIM_PID_kD = 0.0; // TODO
 
-        public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.0, 0.0,
-                0.0);
+        public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.1517, 0.96378,
+                0.017578);
         public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(2.25,
                 0.0, 0.0); // TODO
 
         public static final Time CLOSED_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
         public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
 
-        public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(4338);
-        public static final AngularVelocity SIM_MAX_VELOCITY_RPM = RPM.of(4338);
+        public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(725);
+        public static final AngularVelocity SIM_MAX_VELOCITY_RPM = RPM.of(725);
         public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(99999); // TODO
 
         public static final AngularVelocity SOFT_LIMIT_RPM = RPM.of(4338);
@@ -482,8 +482,8 @@ public final class Constants {
 
     // Consider setting to LOW or MEDIUM for competition to reduce network traffic
     // Set the telemetry verbosity for YAMS subsystems
-    public static final SmartMotorControllerConfig.TelemetryVerbosity TELEMETRY_VERBOSITY = SmartMotorControllerConfig.TelemetryVerbosity.LOW; // TODO:
+    public static final SmartMotorControllerConfig.TelemetryVerbosity TELEMETRY_VERBOSITY = SmartMotorControllerConfig.TelemetryVerbosity.LOW;
 
     public static final SwerveDriveTelemetry.TelemetryVerbosity SWERVE_TELEMETRY_VERBOSITY = SwerveDriveTelemetry.TelemetryVerbosity.POSE;
-    public static final boolean TELEMETRY = false; // TODO: Set to false for competition to reduce network traffic
+    public static final boolean TELEMETRY = false; // Set to false for competition to reduce network traffic
 }

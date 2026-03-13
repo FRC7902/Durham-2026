@@ -125,11 +125,12 @@ public class ShooterSubsystem extends SubsystemBase {
      * @param stopFeeder whether to stop the feeder
      * @return a Command that stops the shooting process when executed
      */
-    public Command stopShooting(boolean stopFeeder) {
+    public Command stopShooting(boolean stopFeeder, boolean stopFlywheel) {
         return Commands.parallel(
                 m_hoodSubsystem.lowerHood(),
-                m_flywheelSubsystem.setDefaultRPM(),
-                stopFeeder ? m_feederSubsystem.stop() : Commands.none())
+                stopFeeder ? m_feederSubsystem.stop() : Commands.none(),
+                stopFlywheel ? m_flywheelSubsystem.stop() : m_flywheelSubsystem.setDefaultRPM()
+                )
                 .withName("SHTR - Stop Shooting");
     }
 
@@ -169,6 +170,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public Command hoodSysId() {
         return m_hoodSubsystem.sysId();
+    }
+
+    public Command feederSysId() {
+        return m_feederSubsystem.sysId();
     }
 
     // TODO: isShooterAlmostEmpty()

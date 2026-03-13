@@ -64,7 +64,7 @@ public class FeederSubsystem extends SubsystemBase {
                         FeederConstants.MAX_ACCELERATION_RPS2)
                 .withGearing(new MechanismGearing(FeederConstants.GEARBOX))
                 .withIdleMode(FeederConstants.IDLE_MODE) // Keep spinning even if not powered
-                .withTelemetry("FlywheelMotor", Constants.TELEMETRY_VERBOSITY)
+                .withTelemetry("FeederMotor", Constants.TELEMETRY_VERBOSITY)
                 .withStatorCurrentLimit(FeederConstants.STATOR_CURRENT_LIMIT_AMPS)
                 .withMotorInverted(FeederConstants.MOTOR_INVERTED)
                 .withClosedLoopRampRate(FeederConstants.CLOSED_LOOP_RAMP_RATE_SEC)
@@ -82,7 +82,7 @@ public class FeederSubsystem extends SubsystemBase {
         FlyWheelConfig feederConfig = new FlyWheelConfig(m_smartMotorController)
                 .withDiameter(FeederConstants.DIAMETER_INCHES)
                 .withMOI(FeederConstants.MOI)
-                .withTelemetry("FlywheelMech", Constants.TELEMETRY_VERBOSITY)
+                .withTelemetry("FeederMech", Constants.TELEMETRY_VERBOSITY)
                 .withSoftLimit(FeederConstants.SOFT_LIMIT_RPM.times(-1), FeederConstants.SOFT_LIMIT_RPM)
                 .withSpeedometerSimulation(FeederConstants.SIM_MAX_VELOCITY_RPM);
 
@@ -96,7 +96,7 @@ public class FeederSubsystem extends SubsystemBase {
      */
     public Command sysId() {
         return m_feeder.sysId(
-                Volts.of(10), Volts.of(1).per(Second), Second.of(20))
+                Volts.of(12), Volts.of(3).per(Second), Second.of(10))
                 .beforeStarting(
                         () -> SignalLogger.start())
                 .finallyDo(() -> SignalLogger.stop());

@@ -311,13 +311,12 @@ public class RobotContainer {
 
         // Extend intake, expand hopper, and run intake rollers
         m_driverController.L2()
-                .onTrue(m_linearIntakeSubsystem.extend())
-                .onFalse(m_linearIntakeSubsystem.retract());
+                .onTrue(Commands.parallel(
+                        m_linearIntakeSubsystem.extend(),
+                        m_intakeRollerSubsystem.intake()))
+                .onFalse(m_linearIntakeSubsystem.retract().andThen(m_intakeRollerSubsystem.stop()));
         m_driverController.L2()
                 .onTrue(m_hopperSubsystem.expand());
-        m_driverController.L2()
-                .onTrue(m_intakeRollerSubsystem.intake())
-                .onFalse(m_intakeRollerSubsystem.stop());
         m_driverController.L2()
                 .whileTrue(
                         Commands.parallel(

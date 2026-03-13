@@ -278,6 +278,8 @@ public final class Constants {
         public static enum FlywheelSpeedZone {
             ZONE_1,
             ZONE_2,
+            ZONE_3,
+            ZONE_4
         }
 
         public static final Map<FlywheelSpeedZone, Map<Distance, Angle>> SHOOTER_DISTANCE_TO_HOOD_ANGLE = Map
@@ -300,24 +302,46 @@ public final class Constants {
                                 Map.entry(Meter.of(3.6212), Degrees.of(24.5 - 5.5)),
                                 Map.entry(Meter.of(4.0396), Degrees.of(27.2 - 5.5)),
                                 Map.entry(Meter.of(4.3405), Degrees.of(30.0 - 5.5)),
-                                Map.entry(Meter.of(4.660), Degrees.of(34.0 - 5.5)))));
+                                Map.entry(Meter.of(4.660), Degrees.of(34.0 - 5.5)))),
+
+                        Map.entry(FlywheelSpeedZone.ZONE_3, Map.ofEntries(
+                                Map.entry(Meter.of(7.5783), Degrees.of(25)),
+                                Map.entry(Meter.of(8.658), Degrees.of(35)),
+                                Map.entry(Meter.of(9.9129), Degrees.of(42)),
+                                Map.entry(Meter.of(10.1536), Degrees.of(42)))),
+
+                        // Make everything >11m at max angle
+                        // TODO: Could probably change this to one entry (requires testing)
+                        Map.entry(FlywheelSpeedZone.ZONE_4, Map.ofEntries(
+                                Map.entry(Meter.of(11), SOFT_LIMIT_MAX),
+                                Map.entry(Meter.of(12), SOFT_LIMIT_MAX),
+                                Map.entry(Meter.of(13), SOFT_LIMIT_MAX),
+                                Map.entry(Meter.of(14), SOFT_LIMIT_MAX))));
 
         public static final Map<FlywheelSpeedZone, AngularVelocity> SHOOTER_MIN_DISTANCE_TO_FLYWHEEL_RPM = Map
                 .ofEntries(
                         Map.entry(FlywheelSpeedZone.ZONE_1, RPM.of(4000)),
-                        Map.entry(FlywheelSpeedZone.ZONE_2, RPM.of(4775)));
+                        Map.entry(FlywheelSpeedZone.ZONE_2, RPM.of(4775)),
+                        Map.entry(FlywheelSpeedZone.ZONE_3, RPM.of(6700)),
+                        Map.entry(FlywheelSpeedZone.ZONE_4, RPM.of(8000)));
 
         public static final Map<Distance, FlywheelSpeedZone> MIN_DISTANCE_TO_FLYWHEEL_SPEED_ZONE = Map
                 .ofEntries(
                         Map.entry(Meters.of(0), FlywheelSpeedZone.ZONE_1),
-                        Map.entry(Meters.of(3.6212), FlywheelSpeedZone.ZONE_2));
+                        Map.entry(Meters.of(3.6212), FlywheelSpeedZone.ZONE_2),
+                        Map.entry(Meters.of(6.6670), FlywheelSpeedZone.ZONE_3),
+                        Map.entry(Meters.of(11), FlywheelSpeedZone.ZONE_4));
 
         public static final Map<FlywheelSpeedZone, InterpolatingDoubleTreeMap> SHOOTER_DISTANCE_TO_HOOD_ANGLE_INTERPOLATION = Map
                 .ofEntries(
                         Map.entry(FlywheelSpeedZone.ZONE_1,
                                 createHoodInterpolationMap(FlywheelSpeedZone.ZONE_1)),
                         Map.entry(FlywheelSpeedZone.ZONE_2,
-                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_2)));
+                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_2)),
+                        Map.entry(FlywheelSpeedZone.ZONE_3,
+                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_3)),
+                        Map.entry(FlywheelSpeedZone.ZONE_4,
+                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_4)));
 
         private static InterpolatingDoubleTreeMap createHoodInterpolationMap(FlywheelSpeedZone zone) {
             InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();

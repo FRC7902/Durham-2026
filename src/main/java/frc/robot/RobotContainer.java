@@ -60,7 +60,7 @@ public class RobotContainer {
     private final SimSubsystem m_simSubsystem;
 
     private final LimelightWrapper m_limelightA;
-    private final LimelightWrapper m_limelightC;
+    private final LimelightWrapper m_limelightB;
 
     // Choreo
     private final AutoFactory autoFactory = new AutoFactory(
@@ -170,7 +170,7 @@ public class RobotContainer {
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
 
         m_limelightA = new LimelightWrapper("limelight-a", true);
-        m_limelightC = new LimelightWrapper("limelight-b", true);
+        m_limelightB = new LimelightWrapper("limelight-b", true);
 
         // Only do this for LL4, so we use heading readings from MT1 from 3G?
         m_limelightA.getSettings().withImuMode(ImuMode.ExternalImu).save();
@@ -435,7 +435,7 @@ public class RobotContainer {
 
     public void updateLocalization() {
         m_limelightA.updateLocalization(m_swerveSubsystem.getSwerveDrive());
-        m_limelightC.updateLocalization(m_swerveSubsystem.getSwerveDrive());
+        m_limelightB.updateLocalization(m_swerveSubsystem.getSwerveDrive());
     }
 
     public Command stopAllSubsystems() {

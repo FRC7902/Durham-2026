@@ -152,9 +152,8 @@ public class Autos {
                 Commands.parallel(
                         m_indexerSubsystem.run(),
                         m_intakeRollerSubsystem.intake(),
-                        m_shooterSubsystem.aimAndShoot(
-                                () -> m_swerveSubsystem.getDistanceToTarget(true),
-                                m_swerveSubsystem::isAutoAimOnTarget)));
+                        m_shooterSubsystem.aimAndShootIgnoreCheck(
+                                () -> m_swerveSubsystem.getDistanceToTarget(true))));
     }
 		public Command depotIntakeAuto(){
 

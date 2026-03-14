@@ -168,11 +168,13 @@ public class Autos {
                         m_shooterSubsystem.aimAndShootIgnoreCheck(
                                 () -> m_swerveSubsystem.getDistanceToTarget(true))),
                 Commands.deadline(
+											Commands.waitSeconds(2.5),
                         m_autoFactory.trajectoryCmd("IntakeDepot"),
                         m_shooterSubsystem.stopShooting(),
                         m_linearIntakeSubsystem.extend()),
                 Commands.waitSeconds(1),
                 Commands.deadline(
+											Commands.waitSeconds(2.5),
                         m_autoFactory.trajectoryCmd("ExitDepot"),
                         m_linearIntakeSubsystem.retract()
                                 .andThen(Commands.parallel(
@@ -193,13 +195,14 @@ public class Autos {
 					m_autoFactory.resetOdometry("ToDepot"),
 					m_autoFactory.trajectoryCmd("ToDepot"),
 					Commands.deadline(
+							Commands.waitSeconds(2.5),
 							m_autoFactory.trajectoryCmd("IntakeDepot"),
-							m_swerveSubsystem.stop(),
 							m_linearIntakeSubsystem.extend(),
 							m_intakeRollerSubsystem.intake(),
 							m_indexerSubsystem.run()),
 					Commands.waitSeconds(1),
 					Commands.deadline(
+							Commands.waitSeconds(2.5),
 							m_autoFactory.trajectoryCmd("ExitDepot"),
 							m_linearIntakeSubsystem.retract()
 									.andThen(m_intakeRollerSubsystem.stop()),

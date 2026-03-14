@@ -83,6 +83,24 @@ public class ShooterSubsystem extends SubsystemBase {
                 .withName("SHTR - Aim and Shoot");
     }
 
+    public Command aimAndShoot(Supplier<Distance> getDistanceToTarget, Supplier<Boolean> isAutoAimReady,
+            boolean stationaryShooting) {
+        return Commands.parallel(
+                m_hoodSubsystem.setAngle(() -> {
+                    Distance distance = getDistanceToTarget.get();
+                    FlywheelSpeedZone zone = m_hoodSubsystem.getSpeedZone(distance);
+                    return m_hoodSubsystem.getAngleToTarget(distance, zone);
+                }),
+                m_flywheelSubsystem.setSpeed(() -> m_flywheelSubsystem.getTargetVelocity(getDistanceToTarget.get())),
+                stationaryShooting ? Commands.waitUntil(() -> isAutoAimReady.get() && isShooterReady())
+                        .andThen(m_feederSubsystem.feed())
+                        : new ConditionalCommand(
+                                m_feederSubsystem.feed(),
+                                m_feederSubsystem.stop(),
+                                () -> isAutoAimReady.get() && isShooterReady()).repeatedly())
+                .withName("SHTR - Aim and Shoot Stationary");
+    }
+
     public Command aimAndShootIgnoreCheck(Supplier<Distance> getDistanceToTarget) {
         return Commands.parallel(
                 m_hoodSubsystem.setAngle(() -> {
@@ -146,6 +164,10 @@ public class ShooterSubsystem extends SubsystemBase {
                 stopFeeder ? m_feederSubsystem.stop() : Commands.none(),
                 stopFlywheel ? m_flywheelSubsystem.stop() : m_flywheelSubsystem.setDefaultRPM())
                 .withName("SHTR - Stop Shooting");
+    }
+
+    public Command stopFeeder() {
+        return m_feederSubsystem.stop();
     }
 
     /**

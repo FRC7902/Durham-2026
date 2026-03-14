@@ -161,7 +161,7 @@ public class Autos {
                 m_autoFactory.resetOdometry("ToDepot"),
                 m_autoFactory.trajectoryCmd("ToDepot"),
                 Commands.deadline(
-                        Commands.waitSeconds(7),
+                        Commands.waitSeconds(5),
                         m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
                         m_indexerSubsystem.run(),
                         m_intakeRollerSubsystem.intake(),

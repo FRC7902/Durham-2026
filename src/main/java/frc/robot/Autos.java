@@ -170,7 +170,6 @@ public class Autos {
 										)),
                 Commands.deadline(
                         m_autoFactory.trajectoryCmd("IntakeDepot"),
-                        m_swerveSubsystem.stop(),
 												m_shooterSubsystem.stopShooting(),
                         m_linearIntakeSubsystem.extend()),
                 Commands.waitSeconds(1),

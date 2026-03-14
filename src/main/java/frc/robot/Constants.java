@@ -68,9 +68,11 @@ public final class Constants {
         public static final double ALLIANCE_ZONE_TOLERANCE_TO_STARTING_LINE = 0.1281386;
 
         public static final Translation2d BLUE_LEFT_FEEDING_TARGET = new Translation2d(0.567625 + 0.5, 6.05175);
-        public static final Translation2d BLUE_RIGHT_FEEDING_TARGET = new Translation2d(0.567625 + 0.5, 2.01725);
+        public static final Translation2d BLUE_RIGHT_FEEDING_TARGET = new Translation2d(0.567625 + 0.5,
+                2.01725);
         public static final Translation2d RED_LEFT_FEEDING_TARGET = new Translation2d(15.973375 - 0.5, 2.01725);
-        public static final Translation2d RED_RIGHT_FEEDING_TARGET = new Translation2d(15.973375 - 0.5, 6.05175);
+        public static final Translation2d RED_RIGHT_FEEDING_TARGET = new Translation2d(15.973375 - 0.5,
+                6.05175);
 
         public static final Pose2d RED_LEFT_TOWER_CLIMB_POS = new Pose2d(15.105, 3.885,
                 new Rotation2d(Degree.of(180)));
@@ -196,14 +198,14 @@ public final class Constants {
         public static final double PID_kI = 0.0; // TODO
         public static final double PID_kD = 0.0; // TODO
 
-        public static final double SIM_PID_kP = 0.075; // TODO
+        public static final double SIM_PID_kP = 0.001; // TODO
         public static final double SIM_PID_kI = 0.0; // TODO
         public static final double SIM_PID_kD = 0.0; // TODO
 
         public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.24, 0.09,
                 0.007553);
-        public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(2.25,
-                0.0, 0.0); // TODO
+        public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(0.24,
+                0.09, 0.007553); // TODO
 
         public static final Time CLOSED_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
         public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);

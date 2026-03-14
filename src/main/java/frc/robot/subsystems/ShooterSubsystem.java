@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
@@ -91,8 +92,8 @@ public class ShooterSubsystem extends SubsystemBase {
                 }),
                 m_flywheelSubsystem.setSpeed(() -> m_flywheelSubsystem.getTargetVelocity(getDistanceToTarget.get())),
                 new WaitCommand(2).andThen(
-										m_feederSubsystem.feed())
-								).withName("SHTR - Aim and Shoot");
+                        m_feederSubsystem.feed()))
+                .withName("SHTR - Aim and Shoot");
 
     }
     // TODO: What if we get pushed while we're auto-aiming? This may 'cause
@@ -121,16 +122,15 @@ public class ShooterSubsystem extends SubsystemBase {
      * @return a Command that stops the shooting process when executed
      */
     public Command stopShooting() {
-        return Commands.parallel(
-                m_hoodSubsystem.lowerHood(),
-                m_flywheelSubsystem.setDefaultRPM(),
-                Commands.sequence(
-                        m_feederSubsystem.stop(),
-                        Commands.deadline(
-                                Commands.waitSeconds(0.5),
-                                m_feederSubsystem.reverse()),
-                        m_feederSubsystem.stop()))
-                .withName("SHTR - Stop Shooting");
+        return Commands.sequence(
+                m_feederSubsystem.stop(),
+                Commands.deadline(
+                        Commands.waitSeconds(0.5),
+                        m_feederSubsystem.reverse()),
+                new ParallelCommandGroup(
+                        m_hoodSubsystem.lowerHood(),
+                        m_flywheelSubsystem.setDefaultRPM(),
+                        m_feederSubsystem.stop()).withName("SHTR - Stop Shooting"));
     }
 
     /**

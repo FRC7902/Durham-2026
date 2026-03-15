@@ -255,6 +255,8 @@ public class Autos {
                 Commands.deadline(
                         Commands.waitSeconds(10),
                         m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
+                        m_intakeRollerSubsystem.intake(),
+                        m_indexerSubsystem.run(),
                         m_shooterSubsystem.aimAndShootIgnoreCheck(
                                 () -> m_swerveSubsystem.getDistanceToTarget(true)))
 

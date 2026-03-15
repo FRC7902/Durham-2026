@@ -327,6 +327,11 @@ public class RobotContainer {
                 .onTrue(m_indexerSubsystem.run())
                 .onFalse(m_indexerSubsystem.stop()
                         .unless(m_driverController.L2()::getAsBoolean));
+        m_driverController.R1()
+                .onTrue(m_linearIntakeSubsystem.shuffle()
+                        .unless(m_driverController.L2()::getAsBoolean))
+                .onFalse(m_linearIntakeSubsystem.retract()
+                        .unless(m_driverController.L2()::getAsBoolean));
 
         // Extend intake, expand hopper, and run intake rollers
         m_driverController.L2()

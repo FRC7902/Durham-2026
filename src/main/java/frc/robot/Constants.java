@@ -177,118 +177,18 @@ public final class Constants {
         }
     }
 
-    public static final class FlywheelConstants {
-        public static final int LEADER_MOTOR_CAN_ID = 20;
-        public static final int FOLLOWER_MOTOR_CAN_ID = 21;
-
-        public static final DCMotor MOTOR = DCMotor.getKrakenX60Foc(2);
-        public static final GearBox GEARBOX = GearBox.fromStages("18:24");
-
-        public static final MotorMode IDLE_MODE = MotorMode.COAST;
-
-        public static final boolean LEADER_MOTOR_INVERTED = false; // TODO
-        public static final boolean FOLLOWER_MOTOR_INVERTED = true;
-
-        public static final Distance DIAMETER_INCHES = Inches.of(3);
-        public static final MomentOfInertia MOI = KilogramSquareMeters.of(0.0006438072);
-
-        public static final Current STATOR_CURRENT_LIMIT_AMPS = Amps.of(80);
-        public static final Current SUPPLY_CURRENT_LIMIT_AMPS = Amps.of(40);
-
-        public static final double PID_kP = 0.003; // TODO
-        public static final double PID_kI = 0.0; // TODO
-        public static final double PID_kD = 0.0; // TODO
-
-        public static final double SIM_PID_kP = 0.001; // TODO
-        public static final double SIM_PID_kI = 0.0; // TODO
-        public static final double SIM_PID_kD = 0.0; // TODO
-
-        public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.24, 0.09,
-                0.007553);
-        public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(0.24,
-                0.09, 0.007553); // TODO
-
-        public static final Time CLOSED_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
-        public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
-
-        public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(8000);
-        public static final AngularVelocity SIM_MAX_VELOCITY_RPM = RPM.of(8000);
-        public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(173);
-
-        public static final AngularVelocity SOFT_LIMIT_RPM = RPM.of(8000); // TODO
-
-        public static final AngularVelocity DEFAULT_VELOCITY = RPM.of(3500);;
-
-        public static final AngularVelocity RPM_TARGET_ERROR = RPM.of(100); // ~2% of ALLIANCE_SHOOTING_VELOCITY
-        public static final Time AT_RPM_DEBOUNCE_TIME = Seconds.of(0.5); // TODO
-
-        public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(-5.087),
-                Inches.of(0),
-                Inches.of(17.912 / 2));
-    }
-
-    public static final class HoodConstants {
-        public static final int MOTOR_CAN_ID = 22;
-        public static final int ENCODER_CAN_ID = 6;
-
-        public static final DCMotor MOTOR = DCMotor.getKrakenX44Foc(1);
-        public static final GearBox GEARBOX = GearBox.fromReductionStages(80.0 / 14.0, 24.0 / 18.0,
-                170.0 / 10.0);
-
-        public static final Current STATOR_CURRENT_LIMIT = Amps.of(40);
-        public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(40);
-
-        public static final double PID_kP = 30.865; // TODO
-        public static final double PID_kI = 0.0; // TODO
-        public static final double PID_kD = 3.0998; // TODO
-
-        public static final double SIM_PID_kP = 16; // TODO
-        public static final double SIM_PID_kI = 7; // TODO
-        public static final double SIM_PID_kD = 1; // TODO
-
-        public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.2417, 11.922,
-                0.37754); // TODO
-        public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(0, 0,
-                0); // TODO
-
-        public static final Time CLOSED_LOOP_RAMP_RATE_SEC = Seconds.of(0.25); // TODO
-        public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25); // TODO
-
-        public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(6000); // TODO
-        public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(0.314); // TODO
-
-        public static final Angle SOFT_LIMIT_MIN = Degrees.of(0);
-        public static final Angle SOFT_LIMIT_MAX = Degrees.of(42);
-        public static final Angle HARD_LIMIT_MIN = Degrees.of(0);
-        public static final Angle HARD_LIMIT_MAX = Degrees.of(42.1875);
-
-        public static final Angle DEFAULT_ANGLE = Degrees.of(8);
-
-        public static final Distance LENGTH = Inches.of(8.5);
-        public static final Mass MASS = Pounds.of(4.39);
-
-        public static final boolean EXTERNAL_ENCODER_INVERTED = true; // TODO
-        public static final double EXTERNAL_ENCODER_GEARING = 17;
-        public static final Angle EXTERNAL_ENCODER_ZERO_OFFSET = Degrees.of(163.8); // TODO
-
-        public static final Angle ANGLE_TARGET_ERROR = Degrees.of(2.5);
-        public static final double AT_ANGLE_DEBOUNCE_TIME = 0.2; // TODO
-
-        public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(-5.087),
-                Inches.of(9.017),
-                Inches.of(17.912 / 2));
-
-        public static enum FlywheelSpeedZone {
+    public static final class ShooterConstants {
+        public static enum ShooterZone {
             ZONE_1,
             ZONE_2,
             ZONE_3,
             ZONE_4
         }
 
-        public static final Map<FlywheelSpeedZone, Map<Distance, Angle>> SHOOTER_DISTANCE_TO_HOOD_ANGLE = Map
+        public static final Map<ShooterZone, Map<Distance, Angle>> SHOOTER_DISTANCE_TO_HOOD_ANGLE = Map
                 .ofEntries(
                         // 4000 RPM
-                        Map.entry(FlywheelSpeedZone.ZONE_1, Map.ofEntries(
+                        Map.entry(ShooterZone.ZONE_1, Map.ofEntries(
                                 Map.entry(Meter.of(1.6698), Degrees.of(14.0 - 5.5)),
                                 Map.entry(Meter.of(1.9717), Degrees.of(17.5 - 5.5)),
                                 Map.entry(Meter.of(2.19499), Degrees.of(20.0 - 5.5)),
@@ -301,13 +201,13 @@ public final class Constants {
 
                         )),
                         // 4775 RPM
-                        Map.entry(FlywheelSpeedZone.ZONE_2, Map.ofEntries(
+                        Map.entry(ShooterZone.ZONE_2, Map.ofEntries(
                                 Map.entry(Meter.of(3.6212), Degrees.of(24.5 - 5.5)),
                                 Map.entry(Meter.of(4.0396), Degrees.of(27.2 - 5.5)),
                                 Map.entry(Meter.of(4.3405), Degrees.of(30.0 - 5.5)),
                                 Map.entry(Meter.of(4.660), Degrees.of(34.0 - 5.5)))),
 
-                        Map.entry(FlywheelSpeedZone.ZONE_3, Map.ofEntries(
+                        Map.entry(ShooterZone.ZONE_3, Map.ofEntries(
                                 Map.entry(Meter.of(7.5783), Degrees.of(25)),
                                 Map.entry(Meter.of(8.658), Degrees.of(35)),
                                 Map.entry(Meter.of(9.9129), Degrees.of(42)),
@@ -315,87 +215,189 @@ public final class Constants {
 
                         // Make everything >11m at max angle
                         // TODO: Could probably change this to one entry (requires testing)
-                        Map.entry(FlywheelSpeedZone.ZONE_4, Map.ofEntries(
-                                Map.entry(Meter.of(11), SOFT_LIMIT_MAX),
-                                Map.entry(Meter.of(12), SOFT_LIMIT_MAX),
-                                Map.entry(Meter.of(13), SOFT_LIMIT_MAX),
-                                Map.entry(Meter.of(14), SOFT_LIMIT_MAX))));
+                        Map.entry(ShooterZone.ZONE_4, Map.ofEntries(
+                                Map.entry(Meter.of(11), HoodConstants.SOFT_LIMIT_MAX),
+                                Map.entry(Meter.of(12), HoodConstants.SOFT_LIMIT_MAX),
+                                Map.entry(Meter.of(13), HoodConstants.SOFT_LIMIT_MAX),
+                                Map.entry(Meter.of(14), HoodConstants.SOFT_LIMIT_MAX))));
 
-        public static final Map<FlywheelSpeedZone, AngularVelocity> SHOOTER_MIN_DISTANCE_TO_FLYWHEEL_RPM = Map
+        public static final Map<ShooterZone, AngularVelocity> SHOOTER_MIN_DISTANCE_TO_FLYWHEEL_RPM = Map
                 .ofEntries(
-                        Map.entry(FlywheelSpeedZone.ZONE_1, RPM.of(4000)),
-                        Map.entry(FlywheelSpeedZone.ZONE_2, RPM.of(4775)),
-                        Map.entry(FlywheelSpeedZone.ZONE_3, RPM.of(6700)),
-                        Map.entry(FlywheelSpeedZone.ZONE_4, RPM.of(8000)));
+                        Map.entry(ShooterZone.ZONE_1, RPM.of(4000)),
+                        Map.entry(ShooterZone.ZONE_2, RPM.of(4775)),
+                        Map.entry(ShooterZone.ZONE_3, RPM.of(6700)),
+                        Map.entry(ShooterZone.ZONE_4, RPM.of(8000)));
 
-        public static final Map<Distance, FlywheelSpeedZone> MIN_DISTANCE_TO_FLYWHEEL_SPEED_ZONE = Map
+        public static final Map<Distance, ShooterZone> MIN_DISTANCE_TO_FLYWHEEL_SPEED_ZONE = Map
                 .ofEntries(
-                        Map.entry(Meters.of(0), FlywheelSpeedZone.ZONE_1),
-                        Map.entry(Meters.of(3.6212), FlywheelSpeedZone.ZONE_2),
-                        Map.entry(Meters.of(8.2705), FlywheelSpeedZone.ZONE_3),
-                        Map.entry(Meters.of(12.40575), FlywheelSpeedZone.ZONE_4));
+                        Map.entry(Meters.of(0), ShooterZone.ZONE_1),
+                        Map.entry(Meters.of(3.6212), ShooterZone.ZONE_2),
+                        Map.entry(Meters.of(8.2705), ShooterZone.ZONE_3),
+                        Map.entry(Meters.of(12.40575), ShooterZone.ZONE_4));
 
-        public static final Map<FlywheelSpeedZone, InterpolatingDoubleTreeMap> SHOOTER_DISTANCE_TO_HOOD_ANGLE_INTERPOLATION = Map
+        public static final Map<ShooterZone, InterpolatingDoubleTreeMap> SHOOTER_DISTANCE_TO_HOOD_ANGLE_INTERPOLATION = Map
                 .ofEntries(
-                        Map.entry(FlywheelSpeedZone.ZONE_1,
-                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_1)),
-                        Map.entry(FlywheelSpeedZone.ZONE_2,
-                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_2)),
-                        Map.entry(FlywheelSpeedZone.ZONE_3,
-                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_3)),
-                        Map.entry(FlywheelSpeedZone.ZONE_4,
-                                createHoodInterpolationMap(FlywheelSpeedZone.ZONE_4)));
+                        Map.entry(ShooterZone.ZONE_1,
+                                createHoodInterpolationMap(ShooterZone.ZONE_1)),
+                        Map.entry(ShooterZone.ZONE_2,
+                                createHoodInterpolationMap(ShooterZone.ZONE_2)),
+                        Map.entry(ShooterZone.ZONE_3,
+                                createHoodInterpolationMap(ShooterZone.ZONE_3)),
+                        Map.entry(ShooterZone.ZONE_4,
+                                createHoodInterpolationMap(ShooterZone.ZONE_4)));
 
-        private static InterpolatingDoubleTreeMap createHoodInterpolationMap(FlywheelSpeedZone zone) {
+        private static InterpolatingDoubleTreeMap createHoodInterpolationMap(ShooterZone zone) {
             InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
             SHOOTER_DISTANCE_TO_HOOD_ANGLE.get(zone).forEach(
                     (distance, angle) -> map.put(distance.in(Meters), angle.in(Degrees)));
             return map;
         }
-    }
 
-    public static final class FeederConstants {
-        public static final int MOTOR_CAN_ID = 23;
-        public static final int BEAM_BREAK_DIO_PORT = 2; // TODO
+        public static final class FlywheelConstants {
+            public static final int LEADER_MOTOR_CAN_ID = 20;
+            public static final int FOLLOWER_MOTOR_CAN_ID = 21;
 
-        public static final AngularVelocity FEEDER_SPEED = RPM.of(725);
-        public static final AngularVelocity REVERSE_SPEED = RPM.of(-725);
+            public static final DCMotor MOTOR = DCMotor.getKrakenX60Foc(2);
+            public static final GearBox GEARBOX = GearBox.fromStages("18:24");
 
-        public static final DCMotor MOTOR = DCMotor.getKrakenX60Foc(1);
-        public static final GearBox GEARBOX = GearBox.fromStages("5:1", "24:15");
+            public static final MotorMode IDLE_MODE = MotorMode.COAST;
 
-        public static final MotorMode IDLE_MODE = MotorMode.BRAKE;
+            public static final boolean LEADER_MOTOR_INVERTED = false; // TODO
+            public static final boolean FOLLOWER_MOTOR_INVERTED = true;
 
-        public static final boolean MOTOR_INVERTED = true;
+            public static final Distance DIAMETER_INCHES = Inches.of(3);
+            public static final MomentOfInertia MOI = KilogramSquareMeters.of(0.0006438072);
 
-        public static final Distance DIAMETER_INCHES = Inches.of(4);
-        public static final MomentOfInertia MOI = KilogramSquareMeters.of(
-                0.0009446408);
+            public static final Current STATOR_CURRENT_LIMIT_AMPS = Amps.of(80);
+            public static final Current SUPPLY_CURRENT_LIMIT_AMPS = Amps.of(40);
 
-        public static final Current STATOR_CURRENT_LIMIT_AMPS = Amps.of(60);
-        public static final Current SUPPLY_CURRENT_LIMIT_AMPS = Amps.of(50);
+            public static final double PID_kP = 0.003; // TODO
+            public static final double PID_kI = 0.0; // TODO
+            public static final double PID_kD = 0.0; // TODO
 
-        public static final double PID_kP = 0.0; // TODO
-        public static final double PID_kI = 0.0; // TODO
-        public static final double PID_kD = 0.0; // TODO
+            public static final double SIM_PID_kP = 0.001; // TODO
+            public static final double SIM_PID_kI = 0.0; // TODO
+            public static final double SIM_PID_kD = 0.0; // TODO
 
-        public static final double SIM_PID_kP = 0.075; // TODO
-        public static final double SIM_PID_kI = 0.0; // TODO
-        public static final double SIM_PID_kD = 0.0; // TODO
+            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.24, 0.09,
+                    0.007553);
+            public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(0.24,
+                    0.09, 0.007553); // TODO
 
-        public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.1517, 0.96378,
-                0.017578);
-        public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(2.25,
-                0.0, 0.0); // TODO
+            public static final Time CLOSED_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
+            public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
 
-        public static final Time CLOSED_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
-        public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
+            public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(8000);
+            public static final AngularVelocity SIM_MAX_VELOCITY_RPM = RPM.of(8000);
+            public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(173);
 
-        public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(725);
-        public static final AngularVelocity SIM_MAX_VELOCITY_RPM = RPM.of(725);
-        public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(99999); // TODO
+            public static final AngularVelocity SOFT_LIMIT_RPM = RPM.of(8000); // TODO
 
-        public static final AngularVelocity SOFT_LIMIT_RPM = RPM.of(4338);
+            public static final AngularVelocity DEFAULT_VELOCITY = RPM.of(3500);;
+
+            public static final AngularVelocity RPM_TARGET_ERROR = RPM.of(100); // ~2% of ALLIANCE_SHOOTING_VELOCITY
+            public static final Time AT_RPM_DEBOUNCE_TIME = Seconds.of(0.5); // TODO
+
+            public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(-5.087),
+                    Inches.of(0),
+                    Inches.of(17.912 / 2));
+        }
+
+        public static final class HoodConstants {
+            public static final int MOTOR_CAN_ID = 22;
+            public static final int ENCODER_CAN_ID = 6;
+
+            public static final DCMotor MOTOR = DCMotor.getKrakenX44Foc(1);
+            public static final GearBox GEARBOX = GearBox.fromReductionStages(80.0 / 14.0, 24.0 / 18.0,
+                    170.0 / 10.0);
+
+            public static final Current STATOR_CURRENT_LIMIT = Amps.of(40);
+            public static final Current SUPPLY_CURRENT_LIMIT = Amps.of(40);
+
+            public static final double PID_kP = 30.865; // TODO
+            public static final double PID_kI = 0.0; // TODO
+            public static final double PID_kD = 3.0998; // TODO
+
+            public static final double SIM_PID_kP = 16; // TODO
+            public static final double SIM_PID_kI = 7; // TODO
+            public static final double SIM_PID_kD = 1; // TODO
+
+            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.2417, 11.922,
+                    0.37754); // TODO
+            public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(0, 0,
+                    0); // TODO
+
+            public static final Time CLOSED_LOOP_RAMP_RATE_SEC = Seconds.of(0.25); // TODO
+            public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25); // TODO
+
+            public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(6000); // TODO
+            public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(0.314); // TODO
+
+            public static final Angle SOFT_LIMIT_MIN = Degrees.of(0);
+            public static final Angle SOFT_LIMIT_MAX = Degrees.of(42);
+            public static final Angle HARD_LIMIT_MIN = Degrees.of(0);
+            public static final Angle HARD_LIMIT_MAX = Degrees.of(42.1875);
+
+            public static final Angle DEFAULT_ANGLE = Degrees.of(8);
+
+            public static final Distance LENGTH = Inches.of(8.5);
+            public static final Mass MASS = Pounds.of(4.39);
+
+            public static final boolean EXTERNAL_ENCODER_INVERTED = true; // TODO
+            public static final double EXTERNAL_ENCODER_GEARING = 17;
+            public static final Angle EXTERNAL_ENCODER_ZERO_OFFSET = Degrees.of(163.8); // TODO
+
+            public static final Angle ANGLE_TARGET_ERROR = Degrees.of(2.5);
+            public static final double AT_ANGLE_DEBOUNCE_TIME = 0.2; // TODO
+
+            public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(-5.087),
+                    Inches.of(9.017),
+                    Inches.of(17.912 / 2));
+        }
+
+        public static final class FeederConstants {
+            public static final int MOTOR_CAN_ID = 23;
+            public static final int BEAM_BREAK_DIO_PORT = 2; // TODO
+
+            public static final AngularVelocity FEEDER_SPEED = RPM.of(725);
+            public static final AngularVelocity REVERSE_SPEED = RPM.of(-725);
+
+            public static final DCMotor MOTOR = DCMotor.getKrakenX60Foc(1);
+            public static final GearBox GEARBOX = GearBox.fromStages("5:1", "24:15");
+
+            public static final MotorMode IDLE_MODE = MotorMode.BRAKE;
+
+            public static final boolean MOTOR_INVERTED = true;
+
+            public static final Distance DIAMETER_INCHES = Inches.of(4);
+            public static final MomentOfInertia MOI = KilogramSquareMeters.of(
+                    0.0009446408);
+
+            public static final Current STATOR_CURRENT_LIMIT_AMPS = Amps.of(60);
+            public static final Current SUPPLY_CURRENT_LIMIT_AMPS = Amps.of(50);
+
+            public static final double PID_kP = 0.0; // TODO
+            public static final double PID_kI = 0.0; // TODO
+            public static final double PID_kD = 0.0; // TODO
+
+            public static final double SIM_PID_kP = 0.075; // TODO
+            public static final double SIM_PID_kI = 0.0; // TODO
+            public static final double SIM_PID_kD = 0.0; // TODO
+
+            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.1517, 0.96378,
+                    0.017578);
+            public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(2.25,
+                    0.0, 0.0); // TODO
+
+            public static final Time CLOSED_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
+            public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25);
+
+            public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(725);
+            public static final AngularVelocity SIM_MAX_VELOCITY_RPM = RPM.of(725);
+            public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(99999); // TODO
+
+            public static final AngularVelocity SOFT_LIMIT_RPM = RPM.of(4338);
+        }
     }
 
     public static final class HopperConstants {

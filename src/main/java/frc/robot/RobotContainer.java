@@ -428,19 +428,6 @@ public class RobotContainer {
         // m_driverController.L2()::getAsBoolean));
     }
 
-    /**
-     * Starts the flywheel spinning at the default RPM, the speed at which it should
-     * spin when the shooter is not actively shooting.
-     * 
-     * This command is intended to be scheduled when teleop starts (in
-     * Robot.teleopInit()).
-     * 
-     * @return a Command that starts the flywheel at the default RPM when executed
-     */
-    public Command startFlywheelDefaultRPM() {
-        return m_shooterSubsystem.startFlywheelDefaultRPM();
-    }
-
     public void calibrateLinearIntakePosition() {
         if (m_linearIntakeSubsystem.getExtendedLimitSwitch()) {
             CommandScheduler.getInstance().schedule(m_linearIntakeSubsystem.setEncoderPositionExtended());

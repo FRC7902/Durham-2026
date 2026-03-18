@@ -786,5 +786,6 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("isAutoAimReady", isAutoAimOnTarget());
         SmartDashboard.putString("currentZone", getCurrentZone().toString());
         SmartDashboard.putNumber("Auto aim scale translation", getAutoAimScaleTranslation(getDistanceToTarget()).get());
+        SmartDashboard.putNumber("Distance to hub", getDistanceToTarget().in(Meters));
     }
 }

@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousExit() {
+        m_robotContainer.driveAngularVelocity.driveToPoseEnabled(false);
     }
 
     @Override
@@ -63,6 +64,7 @@ public class Robot extends TimedRobot {
         }
 
         CommandScheduler.getInstance().schedule(m_robotContainer.stopAllSubsystems());
+        m_robotContainer.driveAngularVelocity.driveToPoseEnabled(false);
 
         // Start the flywheel at the default RPM when teleop starts
         CommandScheduler.getInstance().schedule(m_robotContainer.startFlywheelDefaultRPM());

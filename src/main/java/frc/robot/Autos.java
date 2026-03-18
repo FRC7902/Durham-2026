@@ -95,7 +95,8 @@ public class Autos {
     private Command driveToWaypoint(Position position, double maxTranslationalVelocity,
             double maxTranslationalAcceleration) {
         return Commands.sequence(
-                new InstantCommand(() -> updateLimits(maxTranslationalVelocity, maxTranslationalAcceleration)),
+                new InstantCommand(() -> updateLimits(maxTranslationalVelocity,
+                        maxTranslationalAcceleration)),
                 driveToWaypoint(position));
     }
 
@@ -108,7 +109,8 @@ public class Autos {
     private Command driveToWaypoint(Position position, AngularVelocity maxRotationalVelocity,
             AngularVelocity maxRotationalAcceleration) {
         return Commands.sequence(
-                new InstantCommand(() -> updateLimits(maxRotationalVelocity, maxRotationalAcceleration)),
+                new InstantCommand(
+                        () -> updateLimits(maxRotationalVelocity, maxRotationalAcceleration)),
                 driveToWaypoint(position));
     }
 
@@ -160,7 +162,8 @@ public class Autos {
 
     private void updateLimits(AngularVelocity maxRotationalVelocity, AngularVelocity maxRotationalAcceleration) {
         updateLimits(SwerveConstants.DRIVE_TO_POSE_TRANSLATION_MAX_VELOCITY,
-                SwerveConstants.DRIVE_TO_POSE_TRANSLATION_MAX_ACCELERATION, maxRotationalVelocity.in(RadiansPerSecond),
+                SwerveConstants.DRIVE_TO_POSE_TRANSLATION_MAX_ACCELERATION,
+                maxRotationalVelocity.in(RadiansPerSecond),
                 maxRotationalAcceleration.in(RadiansPerSecond));
     }
 
@@ -181,17 +184,17 @@ public class Autos {
 
         return new SequentialCommandGroup(
                 resetOdometry(Position.STARTING_LINE_RIGHT),
-                new InstantCommand(() -> m_robotContainer.driveAngularVelocity.driveToPoseEnabled(true)),
-                driveToWaypoint(Position.NEUTRAL_RIGHT_1)
-        // Commands.deadline(
-        // driveToWaypoint(Position.NEUTRAL_RIGHT_2),
-        // m_linearIntakeSubsystem.extend(),
-        // m_intakeRollerSubsystem.intake()),
-        // Commands.deadline(
-        // driveToWaypoint(Position.NEUTRAL_RIGHT_3),
-        // m_linearIntakeSubsystem.retract().andThen(m_intakeRollerSubsystem.stop())),
-        // driveToWaypoint(Position.ALLIANCE_RIGHT_1)
-        );
+                new InstantCommand(
+                        () -> m_robotContainer.driveAngularVelocity.driveToPoseEnabled(true)),
+                driveToWaypoint(Position.NEUTRAL_RIGHT_1),
+                Commands.deadline(
+                        driveToWaypoint(Position.NEUTRAL_RIGHT_2),
+                        m_linearIntakeSubsystem.extend(),
+                        m_intakeRollerSubsystem.intake()),
+                Commands.deadline(
+                        driveToWaypoint(Position.NEUTRAL_RIGHT_3),
+                        m_linearIntakeSubsystem.retract().andThen(m_intakeRollerSubsystem.stop())),
+                driveToWaypoint(Position.ALLIANCE_RIGHT_1));
 
     }
 

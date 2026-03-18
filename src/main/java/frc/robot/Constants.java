@@ -87,8 +87,8 @@ public final class Constants {
         public static final double DRIVE_TO_POSE_TRANSLATION_kP = 5;
         public static final double DRIVE_TO_POSE_TRANSLATION_kI = 0;
         public static final double DRIVE_TO_POSE_TRANSLATION_kD = 0;
-        public static final double DRIVE_TO_POSE_TRANSLATION_MAX_VELOCITY = 1;
-        public static final double DRIVE_TO_POSE_TRANSLATION_MAX_ACCELERATION = 0.5;
+        public static final double DRIVE_TO_POSE_TRANSLATION_MAX_VELOCITY = 0.001;
+        public static final double DRIVE_TO_POSE_TRANSLATION_MAX_ACCELERATION = 0.001;
 
         public static final double DRIVE_TO_POSE_ROTATION_kP = 5;
         public static final double DRIVE_TO_POSE_ROTATION_kI = 0;
@@ -514,5 +514,5 @@ public final class Constants {
     public static final SmartMotorControllerConfig.TelemetryVerbosity TELEMETRY_VERBOSITY = SmartMotorControllerConfig.TelemetryVerbosity.LOW;
 
     public static final SwerveDriveTelemetry.TelemetryVerbosity SWERVE_TELEMETRY_VERBOSITY = SwerveDriveTelemetry.TelemetryVerbosity.POSE;
-    public static final boolean TELEMETRY = false; // Set to false for competition to reduce network traffic
+    public static final boolean TELEMETRY = true; // Set to false for competition to reduce network traffic
 }

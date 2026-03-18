@@ -182,15 +182,16 @@ public class Autos {
         return new SequentialCommandGroup(
                 resetOdometry(Position.STARTING_LINE_RIGHT),
                 new InstantCommand(() -> m_robotContainer.driveAngularVelocity.driveToPoseEnabled(true)),
-                driveToWaypoint(Position.NEUTRAL_RIGHT_1),
-                Commands.deadline(
-                        driveToWaypoint(Position.NEUTRAL_RIGHT_2),
-                        m_linearIntakeSubsystem.extend(),
-                        m_intakeRollerSubsystem.intake()),
-                Commands.deadline(
-                        driveToWaypoint(Position.NEUTRAL_RIGHT_3),
-                        m_linearIntakeSubsystem.retract().andThen(m_intakeRollerSubsystem.stop())),
-                driveToWaypoint(Position.ALLIANCE_RIGHT_1));
+                driveToWaypoint(Position.NEUTRAL_RIGHT_1)
+        // Commands.deadline(
+        // driveToWaypoint(Position.NEUTRAL_RIGHT_2),
+        // m_linearIntakeSubsystem.extend(),
+        // m_intakeRollerSubsystem.intake()),
+        // Commands.deadline(
+        // driveToWaypoint(Position.NEUTRAL_RIGHT_3),
+        // m_linearIntakeSubsystem.retract().andThen(m_intakeRollerSubsystem.stop())),
+        // driveToWaypoint(Position.ALLIANCE_RIGHT_1)
+        );
 
     }
 

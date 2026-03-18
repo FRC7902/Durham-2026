@@ -20,14 +20,14 @@ public class AutoConstants {
 
     // Create map position enum to Pose2D
     public static Map<Position, Pose2d> positionToPose = Map.of(
-            Position.STARTING_LINE_RIGHT, new Pose2d(4.0218614, FieldConstants.FIELD_WIDTH - 0.632, new Rotation2d(0)),
+            Position.STARTING_LINE_RIGHT, new Pose2d(4.0218614, 0.632, new Rotation2d(0)),
             Position.NEUTRAL_RIGHT_1,
-            new Pose2d(8.02169132232666, FieldConstants.FIELD_WIDTH - 0.632, new Rotation2d(1.3203533077139966)),
+            new Pose2d(8.02169132232666, 0.632, new Rotation2d(0)),
             Position.NEUTRAL_RIGHT_2,
-            new Pose2d(7.77288293838501, FieldConstants.FIELD_WIDTH - 3.4187989234924316,
-                    new Rotation2d(1.3203533077139966)),
+            new Pose2d(7.77288293838501, 3.4187989234924316,
+                    new Rotation2d(-1.3203533077139966)),
             Position.NEUTRAL_RIGHT_3,
-            new Pose2d(5.869497776031494, FieldConstants.FIELD_WIDTH - 0.632, new Rotation2d(Degrees.of(-90))),
+            new Pose2d(5.869497776031494, 0.632, new Rotation2d(Degrees.of(90))),
             Position.ALLIANCE_RIGHT_1,
-            new Pose2d(4.015, FieldConstants.FIELD_WIDTH - 0.632, new Rotation2d(Degrees.of(-80.25))));
+            new Pose2d(4.015, 0.632, new Rotation2d(Degrees.of(80.25))));
 }

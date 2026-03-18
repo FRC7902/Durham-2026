@@ -191,18 +191,27 @@ public class Autos {
                 Commands.deadline(
                         driveToWaypoint(Position.NEUTRAL_RIGHT_1),
                         m_linearIntakeSubsystem.extend(),
-                        m_intakeRollerSubsystem.intake()),
-                
+                        m_intakeRollerSubsystem.intake(),
+                        m_indexerSubsystem.run()),
+
                 // Drive to center of field
                 driveToWaypoint(Position.NEUTRAL_RIGHT_2),
 
                 // Drive back to trench
                 Commands.deadline(
                         driveToWaypoint(Position.NEUTRAL_RIGHT_3),
-                        m_linearIntakeSubsystem.retract().andThen(m_intakeRollerSubsystem.stop())),
+                        m_linearIntakeSubsystem.retract().andThen(
+                                Commands.parallel(
+                                        m_intakeRollerSubsystem.stop(),
+                                        m_indexerSubsystem.stop()))),
 
                 // Get in shooting position
-                driveToWaypoint(Position.ALLIANCE_RIGHT_1));
+                driveToWaypoint(Position.ALLIANCE_RIGHT_1),
+
+                Commands.parallel(
+                        m_shooterSubsystem.aimAndShootIgnoreCheck(m_swerveSubsystem::getDistanceToTarget),
+                        m_indexerSubsystem.run(),
+                        m_intakeRollerSubsystem.intake()));
 
     }
 

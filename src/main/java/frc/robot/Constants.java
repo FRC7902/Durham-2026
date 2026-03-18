@@ -279,8 +279,8 @@ public final class Constants {
             public static final double SIM_PID_kI = 0.0; // TODO
             public static final double SIM_PID_kD = 0.0; // TODO
 
-            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.24, 0.09,
-                    0.007553);
+            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.28389, 0.090208,
+                    0.0091861);
             public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(0.24,
                     0.09, 0.007553); // TODO
 

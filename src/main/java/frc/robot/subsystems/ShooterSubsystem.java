@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.Constants;
-import frc.robot.Constants.HoodConstants.FlywheelSpeedZone;
+import frc.robot.Constants.ShooterConstants.ShooterZone;
 import frc.robot.subsystems.shooter.FeederSubsystem;
 import frc.robot.subsystems.shooter.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.HoodSubsystem;
@@ -72,7 +72,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return Commands.parallel(
                 m_hoodSubsystem.setAngle(() -> {
                     Distance distance = getDistanceToTarget.get();
-                    FlywheelSpeedZone zone = m_hoodSubsystem.getSpeedZone(distance);
+                    ShooterZone zone = m_hoodSubsystem.getSpeedZone(distance);
                     return m_hoodSubsystem.getAngleToTarget(distance, zone);
                 }),
                 m_flywheelSubsystem.setSpeed(() -> m_flywheelSubsystem.getTargetVelocity(getDistanceToTarget.get())),
@@ -88,7 +88,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return Commands.parallel(
                 m_hoodSubsystem.setAngle(() -> {
                     Distance distance = getDistanceToTarget.get();
-                    FlywheelSpeedZone zone = m_hoodSubsystem.getSpeedZone(distance);
+                    ShooterZone zone = m_hoodSubsystem.getSpeedZone(distance);
                     return m_hoodSubsystem.getAngleToTarget(distance, zone);
                 }),
                 m_flywheelSubsystem.setSpeed(() -> m_flywheelSubsystem.getTargetVelocity(getDistanceToTarget.get())),
@@ -107,7 +107,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return Commands.parallel(
                 m_hoodSubsystem.setAngle(() -> {
                     Distance distance = getDistanceToTarget.get();
-                    FlywheelSpeedZone zone = m_hoodSubsystem.getSpeedZone(distance);
+                    ShooterZone zone = m_hoodSubsystem.getSpeedZone(distance);
                     return m_hoodSubsystem.getAngleToTarget(distance, zone);
                 }),
                 m_flywheelSubsystem.setSpeed(() -> m_flywheelSubsystem.getTargetVelocity(getDistanceToTarget.get())),

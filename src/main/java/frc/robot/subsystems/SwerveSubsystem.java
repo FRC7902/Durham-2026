@@ -761,7 +761,7 @@ public class SwerveSubsystem extends SubsystemBase {
         // }
 
         m_selectedClimbPose = new Pose2d(
-                FieldConstants.FIELD_LENGTH / 2, FieldConstants.FIELD_WIDTH / 2, new Rotation2d(0));
+                2, 2, new Rotation2d(0));
     }
 
     public Pose2d getSelectedClimbPose() {

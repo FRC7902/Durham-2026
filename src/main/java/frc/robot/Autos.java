@@ -61,7 +61,16 @@ public class Autos {
                     Position.NEUTRAL_RIGHT_1,
                     Position.NEUTRAL_RIGHT_2,
                     Position.NEUTRAL_RIGHT_3,
-                    Position.ALLIANCE_RIGHT_1
+                    Position.ALLIANCE_RIGHT_1,
+                    Position.STARTING_LINE_LEFT,
+                    Position.NEUTRAL_LEFT_1,
+                    Position.NEUTRAL_LEFT_2,
+                    Position.NEUTRAL_LEFT_3,
+                    Position.ALLIANCE_LEFT_1,
+                    Position.LEFT_DEPOT_BACKUP,
+                    Position.LEFT_DEPOT_ALIGN,
+                    Position.LEFT_DEPOT_INTAKE,
+                    Position.LEFT_DEPOT_SHOOT
             };
 
             waypointPositions.accept(
@@ -212,6 +221,72 @@ public class Autos {
                         m_shooterSubsystem.aimAndShootIgnoreCheck(m_swerveSubsystem::getDistanceToTarget),
                         m_indexerSubsystem.run(),
                         m_intakeRollerSubsystem.intake()));
+
+    }
+
+    public Command leftRoutine() {
+        return new SequentialCommandGroup(
+                resetOdometry(Position.STARTING_LINE_LEFT),
+                new InstantCommand(
+                        () -> m_robotContainer.driveAngularVelocity.driveToPoseEnabled(true)),
+
+                // Drive to center line and extend/run intake
+                Commands.deadline(
+                        driveToWaypoint(Position.NEUTRAL_LEFT_1),
+                        m_linearIntakeSubsystem.extend(),
+                        m_intakeRollerSubsystem.intake(),
+                        m_indexerSubsystem.run()),
+
+                // Drive to center of field
+                driveToWaypoint(Position.NEUTRAL_LEFT_2),
+
+                // Drive back to trench
+                Commands.deadline(
+                        driveToWaypoint(Position.NEUTRAL_LEFT_3),
+                        m_linearIntakeSubsystem.midpoint().andThen(
+                                Commands.parallel(
+                                        m_intakeRollerSubsystem.stop(),
+                                        m_indexerSubsystem.stop()))),
+
+                // Get in shooting position
+                driveToWaypoint(Position.ALLIANCE_LEFT_1),
+
+                // Shoot for 5s
+                Commands.deadline(
+                        Commands.waitSeconds(4),
+                        m_shooterSubsystem.aimAndShootIgnoreCheck(
+                                m_swerveSubsystem::getDistanceToTarget),
+                        m_indexerSubsystem.run(),
+                        m_intakeRollerSubsystem.intake(),
+                        m_linearIntakeSubsystem.shuffle()),
+
+                // Drive past trench (close to bump) and extend/run intake
+                Commands.deadline(
+                        driveToWaypoint(Position.LEFT_DEPOT_BACKUP),
+                        m_shooterSubsystem.stopShooting(),
+                        m_indexerSubsystem.stop(),
+                        m_intakeRollerSubsystem.stop(),
+                        m_linearIntakeSubsystem.midpoint()),
+                Commands.deadline(
+                        driveToWaypoint(Position.LEFT_DEPOT_ALIGN),
+                        m_linearIntakeSubsystem.extend(),
+                        m_intakeRollerSubsystem.intake(),
+                        m_indexerSubsystem.run()),
+                Commands.deadline(
+                        Commands.waitSeconds(4),
+                        driveToWaypoint(Position.LEFT_DEPOT_INTAKE)),
+                Commands.deadline(
+                        driveToWaypoint(Position.LEFT_DEPOT_SHOOT),
+                        m_linearIntakeSubsystem.midpoint().andThen(
+                                Commands.parallel(
+                                        m_intakeRollerSubsystem.stop(),
+                                        m_indexerSubsystem.stop()))),
+                Commands.parallel(
+                        m_shooterSubsystem.aimAndShootIgnoreCheck(
+                                m_swerveSubsystem::getDistanceToTarget),
+                        m_indexerSubsystem.run(),
+                        m_intakeRollerSubsystem.intake(),
+                        m_linearIntakeSubsystem.shuffle()));
 
     }
 

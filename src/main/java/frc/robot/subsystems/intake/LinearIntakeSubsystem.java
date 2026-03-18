@@ -254,4 +254,8 @@ public class LinearIntakeSubsystem extends SubsystemBase {
         m_linearIntake.simIterate();
     }
 
+    public Command midpoint() {
+        return setPosition(LinearIntakeConstants.MIDPOINT_POSITION);
+    }
+
 }

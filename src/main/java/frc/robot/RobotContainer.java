@@ -13,6 +13,7 @@ import java.util.function.DoubleSupplier;
 import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -39,23 +40,22 @@ import frc.robot.subsystems.SwerveSubsystem.Zone;
 import frc.robot.subsystems.intake.IntakeRollerSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem.LinearIntakePosition;
-import limelight.Limelight;
+import frc.robot.utils.LimelightWrapper;
 import limelight.networktables.LimelightSettings.ImuMode;
 import swervelib.SwerveInputStream;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnField;
-import frc.robot.utils.LimelightWrapper;
 
 public class RobotContainer {
     final CommandPS5Controller m_driverController = new CommandPS5Controller(Constants.DRIVER_CONTROLLER_PORT);
 
     // private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
-    private final HopperSubsystem m_hopperSubsystem = new HopperSubsystem();
-    private final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
-    private final IntakeRollerSubsystem m_intakeRollerSubsystem = new IntakeRollerSubsystem();
-    private final LinearIntakeSubsystem m_linearIntakeSubsystem = new LinearIntakeSubsystem();
-    private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-    private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+    public final HopperSubsystem m_hopperSubsystem = new HopperSubsystem();
+    public final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
+    public final IntakeRollerSubsystem m_intakeRollerSubsystem = new IntakeRollerSubsystem();
+    public final LinearIntakeSubsystem m_linearIntakeSubsystem = new LinearIntakeSubsystem();
+    public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+    public final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve"));
 
     private final SimSubsystem m_simSubsystem;
@@ -75,6 +75,7 @@ public class RobotContainer {
 
             m_swerveSubsystem // The drive subsystem
     );
+
     private final AutoChooser autoChooser;
     private final Autos m_autos;
 
@@ -82,7 +83,7 @@ public class RobotContainer {
      * Converts driver input into a field-relative ChassisSpeeds that is controlled
      * by angular velocity.
      */
-    SwerveInputStream driveAngularVelocity = SwerveInputStream.of(m_swerveSubsystem.getSwerveDrive(),
+    public SwerveInputStream driveAngularVelocity = SwerveInputStream.of(m_swerveSubsystem.getSwerveDrive(),
             () -> m_driverController.getLeftY() * -1,
             () -> m_driverController.getLeftX() * -1)
             .withControllerRotationAxis(() -> m_driverController.getRightX() * -1) // TODO: Check if * -1 is
@@ -144,10 +145,14 @@ public class RobotContainer {
         return () -> -m_swerveSubsystem.getAutoAimHeading().getSin();
     }
 
-    SwerveInputStream driveAutoAim = driveAngularVelocity.copy()
+    public SwerveInputStream driveAutoAim = driveAngularVelocity.copy()
             .withControllerHeadingAxis(autoAimHeadingX(), autoAimHeadingY())
             .headingWhile(true)
             .scaleTranslation(SwerveConstants.AUTO_AIM_SCALE_TRANSLATION);
+
+    Command driveFieldOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveAngularVelocity);
+    Command driveFieldOrientedDirectAngle = m_swerveSubsystem.driveFieldOriented(driveDirectAngle);
+    Command driveFieldOrientedAutoAim = m_swerveSubsystem.driveFieldOriented(driveAutoAim);
 
     public RobotContainer() {
         if (Robot.isSimulation()) {
@@ -159,16 +164,15 @@ public class RobotContainer {
         }
 
         autoChooser = new AutoChooser();
-        m_autos = new Autos(autoFactory, m_intakeRollerSubsystem, m_linearIntakeSubsystem, m_shooterSubsystem,
-                m_indexerSubsystem, m_hopperSubsystem, m_swerveSubsystem, autoAimHeadingX(),
-                autoAimHeadingY());
+        m_autos = new Autos(this);
 
         // autoChooser.addCmd("Right Neutral Zone Auto", m_autos::rightAuto);
         // autoChooser.addCmd("Left Neutral Zone Auto", m_autos::leftAuto);
-        autoChooser.addCmd("Center Shoot Preload Auto", m_autos::shootPreloadAuto);
-        autoChooser.addCmd("Depot", m_autos::depotIntakeAuto);
-        autoChooser.addCmd("DepotOnly", m_autos::depotOnlyAuto);
-        autoChooser.addCmd("Neutral", m_autos::neutralAuto);
+        // autoChooser.addCmd("Center Shoot Preload Auto", m_autos::shootPreloadAuto);
+        // autoChooser.addCmd("Depot", m_autos::depotIntakeAuto);
+        // autoChooser.addCmd("DepotOnly", m_autos::depotOnlyAuto);
+        // autoChooser.addCmd("Neutral", m_autos::neutralAuto);
+        autoChooser.addCmd("testAutonRoutine", m_autos::testAutonRoutine);
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
@@ -179,6 +183,23 @@ public class RobotContainer {
         // Only do this for LL4, so we use heading readings from MT1 from 3G?
         m_limelightA.getSettings().withImuMode(ImuMode.ExternalImu).save();
         m_limelightB.getSettings().withImuMode(ImuMode.ExternalImu).save();
+
+        // PID-tuned auto-align for climbing start position
+        driveAngularVelocity.driveToPose(m_swerveSubsystem::getDriveToWaypoint,
+                new ProfiledPIDController(
+                        SwerveConstants.DRIVE_TO_POSE_TRANSLATION_kP,
+                        SwerveConstants.DRIVE_TO_POSE_TRANSLATION_kI,
+                        SwerveConstants.DRIVE_TO_POSE_TRANSLATION_kD,
+                        new TrapezoidProfile.Constraints(
+                                SwerveConstants.DRIVE_TO_POSE_TRANSLATION_MAX_VELOCITY,
+                                SwerveConstants.DRIVE_TO_POSE_TRANSLATION_MAX_ACCELERATION)),
+                new ProfiledPIDController(
+                        SwerveConstants.DRIVE_TO_POSE_ROTATION_kP,
+                        SwerveConstants.DRIVE_TO_POSE_ROTATION_kI,
+                        SwerveConstants.DRIVE_TO_POSE_ROTATION_kD,
+                        new TrapezoidProfile.Constraints(
+                                SwerveConstants.DRIVE_TO_POSE_ROTATION_MAX_VELOCITY_RAD,
+                                SwerveConstants.DRIVE_TO_POSE_ROTATION_MAX_ACCELERATION_RAD)));
 
         configureBindings();
     }
@@ -232,10 +253,6 @@ public class RobotContainer {
             m_swerveSubsystem::getCurrentZone);
 
     private void configureBindings() {
-        Command driveFieldOrientedAngularVelocity = m_swerveSubsystem.driveFieldOriented(driveAngularVelocity);
-        Command driveFieldOrientedDirectAngle = m_swerveSubsystem.driveFieldOriented(driveDirectAngle);
-        Command driveFieldOrientedAutoAim = m_swerveSubsystem.driveFieldOriented(driveAutoAim);
-
         m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
         m_driverController.options().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyroWithAlliance)));
@@ -372,37 +389,11 @@ public class RobotContainer {
                                         m_indexerSubsystem.stop(),
                                         m_intakeRollerSubsystem.stop())));
 
-        // PID-tuned auto-align for climbing start position
-        driveAngularVelocity.driveToPose(m_swerveSubsystem::getSelectedClimbPose,
-                new ProfiledPIDController(
-                        SwerveConstants.DRIVE_TO_POSE_TRANSLATION_kP,
-                        SwerveConstants.DRIVE_TO_POSE_TRANSLATION_kI,
-                        SwerveConstants.DRIVE_TO_POSE_TRANSLATION_kD,
-                        new TrapezoidProfile.Constraints(
-                                SwerveConstants.DRIVE_TO_POSE_TRANSLATION_MAX_VELOCITY,
-                                SwerveConstants.DRIVE_TO_POSE_TRANSLATION_MAX_ACCELERATION)),
-                new ProfiledPIDController(
-                        SwerveConstants.DRIVE_TO_POSE_ROTATION_kP,
-                        SwerveConstants.DRIVE_TO_POSE_ROTATION_kI,
-                        SwerveConstants.DRIVE_TO_POSE_ROTATION_kD,
-                        new TrapezoidProfile.Constraints(
-                                SwerveConstants.DRIVE_TO_POSE_ROTATION_MAX_VELOCITY_RAD,
-                                SwerveConstants.DRIVE_TO_POSE_ROTATION_MAX_ACCELERATION_RAD)));
-
         // Auto-align to left side tower for climbing
         // m_driverController.povLeft().whileTrue(
         // Commands.sequence(
         // new InstantCommand(
         // () -> m_swerveSubsystem.setSelectedClimbPose(true)),
-        // Commands.runEnd(
-        // () -> driveAngularVelocity.driveToPoseEnabled(true),
-        // () -> driveAngularVelocity.driveToPoseEnabled(false))));
-
-        // Auto-align to right side tower for climbing
-        // m_driverController.povRight().whileTrue(
-        // Commands.sequence(
-        // new InstantCommand(
-        // () -> m_swerveSubsystem.setSelectedClimbPose(false)),
         // Commands.runEnd(
         // () -> driveAngularVelocity.driveToPoseEnabled(true),
         // () -> driveAngularVelocity.driveToPoseEnabled(false))));

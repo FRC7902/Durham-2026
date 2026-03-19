@@ -30,12 +30,16 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.Constants.ClimbConstants.ElevatorConstants;
+import frc.robot.Constants.ClimbConstants.TongueConstants;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SimSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.SwerveSubsystem.Zone;
+import frc.robot.subsystems.climb.ElevatorSubsystem;
+import frc.robot.subsystems.climb.TongueSubsystem;
 import frc.robot.subsystems.intake.IntakeRollerSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem.LinearIntakePosition;
@@ -44,11 +48,15 @@ import limelight.networktables.LimelightSettings.ImuMode;
 import swervelib.SwerveInputStream;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
 import swervelib.simulation.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnField;
+import yams.mechanisms.config.ElevatorConfig;
 
 public class RobotContainer {
     final CommandPS5Controller m_driverController = new CommandPS5Controller(Constants.DRIVER_CONTROLLER_PORT);
 
     // private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+    public final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
+    public final TongueSubsystem m_tongueSubsystem = new TongueSubsystem();
+
     public final HopperSubsystem m_hopperSubsystem = new HopperSubsystem();
     public final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
     public final IntakeRollerSubsystem m_intakeRollerSubsystem = new IntakeRollerSubsystem();
@@ -387,6 +395,26 @@ public class RobotContainer {
                                 Commands.parallel(
                                         m_indexerSubsystem.stop(),
                                         m_intakeRollerSubsystem.stop())));
+
+        m_driverController.square().onTrue(
+                m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_LOWER_LIMIT));
+
+        m_driverController.povDown().onTrue(
+                m_elevatorSubsystem.setHeight(ElevatorConstants.FIRST_LEVEL_HEIGHT));
+
+        m_driverController.povLeft().onTrue(
+                m_elevatorSubsystem.setHeight(ElevatorConstants.SECOND_LEVEL_HEIGHT));
+
+        m_driverController.povRight().onTrue(
+                m_elevatorSubsystem.setHeight(ElevatorConstants.THIRD_LEVEL_HEIGHT));
+
+        m_driverController.povUp().onTrue(
+                m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_UPPER_LIMIT));
+
+        m_driverController.cross().onTrue(m_tongueSubsystem.setDistance(TongueConstants.SOFT_LIMIT_MIN));
+        m_driverController.triangle().onTrue(m_tongueSubsystem.setDistance(TongueConstants.SOFT_LIMIT_MAX));
+
+        m_driverController.circle().whileTrue(m_tongueSubsystem.sysId());
 
         // Auto-align to left side tower for climbing
         // m_driverController.povLeft().whileTrue(

@@ -219,7 +219,8 @@ public final class Constants {
                                 Map.entry(Meter.of(11), HoodConstants.SOFT_LIMIT_MAX),
                                 Map.entry(Meter.of(12), HoodConstants.SOFT_LIMIT_MAX),
                                 Map.entry(Meter.of(13), HoodConstants.SOFT_LIMIT_MAX),
-                                Map.entry(Meter.of(14), HoodConstants.SOFT_LIMIT_MAX))));
+                                Map.entry(Meter.of(14),
+                                        HoodConstants.SOFT_LIMIT_MAX))));
 
         public static final Map<ShooterZone, AngularVelocity> SHOOTER_MIN_DISTANCE_TO_FLYWHEEL_RPM = Map
                 .ofEntries(
@@ -279,7 +280,8 @@ public final class Constants {
             public static final double SIM_PID_kI = 0.0; // TODO
             public static final double SIM_PID_kD = 0.0; // TODO
 
-            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.28389, 0.090208,
+            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.28389,
+                    0.090208,
                     0.0091861);
             public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(0.24,
                     0.09, 0.007553); // TODO
@@ -289,13 +291,15 @@ public final class Constants {
 
             public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(8000);
             public static final AngularVelocity SIM_MAX_VELOCITY_RPM = RPM.of(8000);
-            public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(173);
+            public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond
+                    .of(173);
 
             public static final AngularVelocity SOFT_LIMIT_RPM = RPM.of(8000); // TODO
 
             public static final AngularVelocity DEFAULT_VELOCITY = RPM.of(3500);;
 
-            public static final AngularVelocity RPM_TARGET_ERROR = RPM.of(100); // ~2% of ALLIANCE_SHOOTING_VELOCITY
+            public static final AngularVelocity RPM_TARGET_ERROR = RPM.of(100); // ~2% of
+                                                                                // ALLIANCE_SHOOTING_VELOCITY
             public static final Time AT_RPM_DEBOUNCE_TIME = Seconds.of(0.5); // TODO
 
             public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(-5.087),
@@ -322,7 +326,8 @@ public final class Constants {
             public static final double SIM_PID_kI = 7; // TODO
             public static final double SIM_PID_kD = 1; // TODO
 
-            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.2417, 11.922,
+            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.2417,
+                    11.922,
                     0.37754); // TODO
             public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(0, 0,
                     0); // TODO
@@ -331,7 +336,8 @@ public final class Constants {
             public static final Time OPEN_LOOP_RAMP_RATE_SEC = Seconds.of(0.25); // TODO
 
             public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(6000); // TODO
-            public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(0.314); // TODO
+            public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond
+                    .of(0.314); // TODO
 
             public static final Angle SOFT_LIMIT_MIN = Degrees.of(0);
             public static final Angle SOFT_LIMIT_MAX = Degrees.of(42);
@@ -384,7 +390,8 @@ public final class Constants {
             public static final double SIM_PID_kI = 0.0; // TODO
             public static final double SIM_PID_kD = 0.0; // TODO
 
-            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.1517, 0.96378,
+            public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(0.1517,
+                    0.96378,
                     0.017578);
             public static final SimpleMotorFeedforward SIM_FEEDFORWARD = new SimpleMotorFeedforward(2.25,
                     0.0, 0.0); // TODO
@@ -394,7 +401,8 @@ public final class Constants {
 
             public static final AngularVelocity MAX_VELOCITY_RPM = RPM.of(725);
             public static final AngularVelocity SIM_MAX_VELOCITY_RPM = RPM.of(725);
-            public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond.of(99999); // TODO
+            public static final AngularAcceleration MAX_ACCELERATION_RPS2 = RotationsPerSecondPerSecond
+                    .of(99999); // TODO
 
             public static final AngularVelocity SOFT_LIMIT_RPM = RPM.of(4338);
         }
@@ -451,8 +459,9 @@ public final class Constants {
             public static final Distance HARD_UPPER_LIMIT = Meters.of(0.420439);
 
             public static final Distance STARTING_HEIGHT = SOFT_LOWER_LIMIT;
-            public static final Distance FIRST_LEVEL_HEIGHT = Meters.of(0.20); // TODO
-            public static final Distance SECOND_LEVEL_HEIGHT = Meters.of(0.30); // TODO
+            public static final Distance FIRST_LEVEL_HEIGHT = Inches.of(0.2666 * SOFT_UPPER_LIMIT.in(Inches)); // TODO
+            public static final Distance SECOND_LEVEL_HEIGHT = Inches.of(0.7238 * SOFT_UPPER_LIMIT.in(Inches)); // TODO
+            public static final Distance THIRD_LEVEL_HEIGHT = Inches.of(0.8762 * SOFT_UPPER_LIMIT.in(Inches)); // TODO
 
             public static final Time HOMING_DEBOUNCE_TIME = Seconds.of(0.4); // TODO
             public static final Voltage HOMING_RUN_VOLTS = Volts.of(-2); // TODO
@@ -460,14 +469,15 @@ public final class Constants {
         }
 
         public static final class TongueConstants {
-            public static final int MOTOR_CAN_ID = 9; // TODO
+            public static final int MOTOR_CAN_ID = 41;
 
-            public static final Distance MECHANISM_CIRCUMFERENCE = Meters
-                    .of(Inches.of(0.25).in(Meters) * 22); // TODO
-            public static final GearBox GEARBOX = GearBox.fromReductionStages(3, 4); // TODO
-            public static final Mass MECHANISM_MASS = Pounds.of(16); // TODO
+            public static final Distance CHAIN_PITCH = Inches.of(0.25);
+            public static final int TOOTH_COUNT = 12;
 
-            public static final double PID_kP = 4.0; // TODO
+            public static final GearBox GEARBOX = GearBox.fromReductionStages(49);
+            public static final Mass MECHANISM_MASS = Pounds.of(1); // TODO
+
+            public static final double PID_kP = 0.0; // TODO
             public static final double PID_kI = 0.0; // TODO
             public static final double PID_kD = 0.0; // TODO
 
@@ -480,11 +490,11 @@ public final class Constants {
 
             public static final Current STATOR_CURRENT_LIMIT = Amps.of(40); // TODO
 
-            public static final Distance STARTING_HEIGHT = Meters.of(0.5); // TODO
-            public static final Distance SOFT_LIMIT_MIN = Meters.of(0); // TODO
-            public static final Distance SOFT_LIMIT_MAX = Meters.of(2); // TODO
-            public static final Distance HARD_LIMIT_MIN = Meters.of(0); // TODO
-            public static final Distance HARD_LIMIT_MAX = Meters.of(3); // TODO
+            public static final Distance STARTING_HEIGHT = Inches.of(0);
+            public static final Distance SOFT_LIMIT_MIN = Inches.of(0);
+            public static final Distance SOFT_LIMIT_MAX = Inches.of(0.071); // TODO
+            public static final Distance HARD_LIMIT_MIN = Inches.of(0);
+            public static final Distance HARD_LIMIT_MAX = Inches.of(0.071);
 
             public static final Translation3d RELATIVE_POSITION = new Translation3d(Meters.of(-0.25),
                     Meters.of(0),
@@ -513,8 +523,8 @@ public final class Constants {
 
     // Consider setting to LOW or MEDIUM for competition to reduce network traffic
     // Set the telemetry verbosity for YAMS subsystems
-    public static final SmartMotorControllerConfig.TelemetryVerbosity TELEMETRY_VERBOSITY = SmartMotorControllerConfig.TelemetryVerbosity.LOW;
+    public static final SmartMotorControllerConfig.TelemetryVerbosity TELEMETRY_VERBOSITY = SmartMotorControllerConfig.TelemetryVerbosity.HIGH;
 
     public static final SwerveDriveTelemetry.TelemetryVerbosity SWERVE_TELEMETRY_VERBOSITY = SwerveDriveTelemetry.TelemetryVerbosity.POSE;
-    public static final boolean TELEMETRY = false; // Set to false for competition to reduce network traffic
+    public static final boolean TELEMETRY = true; // Set to false for competition to reduce network traffic
 }

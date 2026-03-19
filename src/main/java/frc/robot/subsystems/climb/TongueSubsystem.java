@@ -4,17 +4,26 @@
 
 package frc.robot.subsystems.climb;
 
+import static edu.wpi.first.units.Units.Inch;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
+
+import java.util.Optional;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.thethriftybot.devices.ThriftyNova;
 import com.thethriftybot.devices.ThriftyNova.MotorType;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.ClimbConstants.ElevatorConstants;
 import frc.robot.Constants.ClimbConstants.TongueConstants;
 import frc.robot.Constants.MechanismPositionConstants;
 import frc.robot.Robot;
@@ -35,11 +44,14 @@ public class TongueSubsystem extends SubsystemBase {
     private final SmartMotorController m_smartMotorController;
     private final Elevator m_tongue;
 
+    private SmartMotorControllerConfig motorConfig;
+
     public TongueSubsystem() {
         m_motor = new ThriftyNova(TongueConstants.MOTOR_CAN_ID, MotorType.NEO);
 
-        SmartMotorControllerConfig motorConfig = new SmartMotorControllerConfig(this)
-                .withMechanismCircumference(TongueConstants.MECHANISM_CIRCUMFERENCE)
+        motorConfig = new SmartMotorControllerConfig(this)
+                .withMechanismCircumference(
+                        ElevatorConstants.CHAIN_PITCH.times(ElevatorConstants.TOOTH_COUNT))
                 .withClosedLoopController(
                         TongueConstants.PID_kP,
                         TongueConstants.PID_kI,
@@ -48,8 +60,8 @@ public class TongueSubsystem extends SubsystemBase {
                         TongueConstants.MAX_ACCELERATION)
                 .withSoftLimit(TongueConstants.SOFT_LIMIT_MIN, TongueConstants.SOFT_LIMIT_MAX)
                 .withGearing(new MechanismGearing(TongueConstants.GEARBOX))
-                .withIdleMode(MotorMode.BRAKE)
-                .withTelemetry("ElevatorMotor", TelemetryVerbosity.HIGH)
+                .withIdleMode(MotorMode.COAST)
+                .withTelemetry("TongueMotor", TelemetryVerbosity.HIGH)
                 .withStatorCurrentLimit(TongueConstants.STATOR_CURRENT_LIMIT)
                 .withMotorInverted(false)
                 .withClosedLoopRampRate(TongueConstants.CLOSED_LOOP_RAMP_RATE)
@@ -65,7 +77,7 @@ public class TongueSubsystem extends SubsystemBase {
 
         ElevatorConfig tongueConfig = new ElevatorConfig(m_smartMotorController)
                 .withHardLimits(TongueConstants.HARD_LIMIT_MIN, TongueConstants.HARD_LIMIT_MAX)
-                .withTelemetry("Elevator", TelemetryVerbosity.HIGH)
+                .withTelemetry("Tongue", TelemetryVerbosity.HIGH)
                 .withMechanismPositionConfig(robotToMechanism)
                 .withMass(TongueConstants.MECHANISM_MASS);
 
@@ -83,7 +95,7 @@ public class TongueSubsystem extends SubsystemBase {
      */
     public Command sysId() {
         return m_tongue.sysId(
-                Volts.of(12), Volts.of(12).per(Second), Second.of(30))
+                Volts.of(12), Volts.of(1).per(Second), Second.of(15))
                 .beforeStarting(
                         () -> SignalLogger.start())
                 .finallyDo(() -> SignalLogger.stop());
@@ -101,9 +113,24 @@ public class TongueSubsystem extends SubsystemBase {
         return setDistance(m_tongue.getHeight());
     }
 
+    public Optional<Distance> getSetpoint() {
+        Optional<Angle> angleSetpoint = m_tongue.getMechanismSetpoint();
+        if (!angleSetpoint.isPresent()) {
+            return Optional.empty();
+        }
+        return Optional.of(motorConfig.convertFromMechanism(angleSetpoint.get()));
+    }
+
     @Override
     public void periodic() {
         m_tongue.updateTelemetry();
+
+        if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
+            SmartDashboard.putNumber("Tongue/position (Inch)", m_tongue.getHeight().in(Inches));
+            SmartDashboard.putNumber("Tongue/setpoint (Inch)",
+                    getSetpoint().map(pos -> pos.in(Inches)).orElse(Double.NaN));
+
+        }
     }
 
     @Override

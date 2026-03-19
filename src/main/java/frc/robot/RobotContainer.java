@@ -266,6 +266,20 @@ public class RobotContainer {
                 .abs(m_driverController.getLeftX()) > OperatorConstants.DEADBAND
                 || Math.abs(m_driverController.getLeftY()) > OperatorConstants.DEADBAND);
 
+        Trigger isClimberUp = new Trigger(m_elevatorSubsystem::isClimberUp);
+
+        // TODO: Check if aiming
+        isClimberUp.and(
+                m_driverController.R2().negate()).onTrue(
+                        new InstantCommand(() -> {
+                            driveAngularVelocity.scaleTranslation(
+                                    SwerveConstants.AUTO_AIM_SCALE_TRANSLATION)
+                                    .scaleRotation(SwerveConstants.AUTO_AIM_SCALE_TRANSLATION);
+                        }))
+                .onFalse(
+                        new InstantCommand(() -> driveAngularVelocity.scaleTranslation(
+                                1.0).scaleRotation(1.0)));
+
         // Auto-aim (swerve heading with calculated hood angle) and shoot
         m_driverController.R2().whileTrue(driveFieldOrientedAutoAim);
         m_driverController.R2()

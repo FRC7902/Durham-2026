@@ -84,9 +84,12 @@ public class Autos {
 
                 // Wait until the robot is within the specified tolerance of the waypoint
                 .andThen(new InstantCommand(
+                        () -> SmartDashboard.putString("driveToWaypointCHECK", "WAIT ONE SEC")))
+                .andThen(Commands.waitSeconds(1.0))
+                .andThen(new InstantCommand(
                         () -> SmartDashboard.putString("driveToWaypointCHECK", "CHECKING ISATWAYPOINT")))
                 .andThen(Commands.waitUntil(
-                        m_swerveSubsystem::isAtWaypoint).beforeStarting(Commands.waitSeconds(0.02)))
+                        m_swerveSubsystem::isAtWaypoint))
                 .andThen(new InstantCommand(() -> SmartDashboard.putString("driveToWaypointCHECK", "CHECK COMPLETE")));
     }
 

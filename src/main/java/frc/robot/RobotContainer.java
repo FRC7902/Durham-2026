@@ -68,7 +68,7 @@ public class RobotContainer {
     private final LimelightWrapper m_limelightB;
 
     // Choreo
-    private final AutoFactory autoFactory = new AutoFactory(
+    public final AutoFactory m_autoFactory = new AutoFactory(
             m_swerveSubsystem::getPose, // A function that returns the current robot pose
             m_swerveSubsystem::resetOdometry, // A function that resets the current robot pose to
                                               // the provided
@@ -82,6 +82,7 @@ public class RobotContainer {
 
     private final AutoChooser autoChooser;
     private final Autos m_autos;
+    private final Choreo m_choreo = new Choreo(this);
 
     /**
      * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -141,11 +142,11 @@ public class RobotContainer {
             .translationHeadingOffset(Rotation2d.fromDegrees(
                     0));
 
-    private DoubleSupplier autoAimHeadingX() {
+    public DoubleSupplier autoAimHeadingX() {
         return () -> m_swerveSubsystem.getAutoAimHeading().getCos();
     }
 
-    private DoubleSupplier autoAimHeadingY() {
+    public DoubleSupplier autoAimHeadingY() {
         return () -> -m_swerveSubsystem.getAutoAimHeading().getSin();
     }
 
@@ -177,6 +178,7 @@ public class RobotContainer {
         // autoChooser.addCmd("DepotOnly", m_autos::depotOnlyAuto);
         // autoChooser.addCmd("Neutral", m_autos::neutralAuto);
         autoChooser.addCmd("rightNeutralAuto", m_autos::rightNeutralAuto);
+        autoChooser.addCmd("Back up -> Shoot Pre-load", m_choreo::shootPreloadAuto);
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
@@ -211,49 +213,49 @@ public class RobotContainer {
     private final Command selectRedLeftTrenchTraversal = new SelectCommand<>(
             Map.ofEntries(
                     Map.entry(Zone.RED_ALLIANCE_LEFT,
-                            autoFactory.trajectoryCmd("TrenchLeftFromAlliance")),
+                            m_autoFactory.trajectoryCmd("TrenchLeftFromAlliance")),
                     Map.entry(Zone.NEUTRAL_ZONE_RED_LEFT,
-                            autoFactory.trajectoryCmd("TrenchLeftToAlliance")),
+                            m_autoFactory.trajectoryCmd("TrenchLeftToAlliance")),
                     Map.entry(Zone.NEUTRAL_ZONE_BLUE_RIGHT,
-                            autoFactory.trajectoryCmd("TrenchLeftToOpponent")),
+                            m_autoFactory.trajectoryCmd("TrenchLeftToOpponent")),
                     Map.entry(Zone.BLUE_ALLIANCE_RIGHT,
-                            autoFactory.trajectoryCmd("TrenchLeftFromOpponent"))),
+                            m_autoFactory.trajectoryCmd("TrenchLeftFromOpponent"))),
             m_swerveSubsystem::getCurrentZone);
 
     private final Command selectRedRightTrenchTraversal = new SelectCommand<>(
             Map.ofEntries(
                     Map.entry(Zone.RED_ALLIANCE_RIGHT,
-                            autoFactory.trajectoryCmd("TrenchRightFromAlliance")),
+                            m_autoFactory.trajectoryCmd("TrenchRightFromAlliance")),
                     Map.entry(Zone.NEUTRAL_ZONE_RED_RIGHT,
-                            autoFactory.trajectoryCmd("TrenchRightToAlliance")),
+                            m_autoFactory.trajectoryCmd("TrenchRightToAlliance")),
                     Map.entry(Zone.NEUTRAL_ZONE_BLUE_LEFT,
-                            autoFactory.trajectoryCmd("TrenchRightToOpponent")),
+                            m_autoFactory.trajectoryCmd("TrenchRightToOpponent")),
                     Map.entry(Zone.BLUE_ALLIANCE_LEFT,
-                            autoFactory.trajectoryCmd("TrenchRightFromOpponent"))),
+                            m_autoFactory.trajectoryCmd("TrenchRightFromOpponent"))),
             m_swerveSubsystem::getCurrentZone);
 
     private final Command selectBlueLeftTrenchTraversal = new SelectCommand<>(
             Map.ofEntries(
                     Map.entry(Zone.BLUE_ALLIANCE_LEFT,
-                            autoFactory.trajectoryCmd("TrenchLeftFromAlliance")),
+                            m_autoFactory.trajectoryCmd("TrenchLeftFromAlliance")),
                     Map.entry(Zone.NEUTRAL_ZONE_BLUE_LEFT,
-                            autoFactory.trajectoryCmd("TrenchLeftToAlliance")),
+                            m_autoFactory.trajectoryCmd("TrenchLeftToAlliance")),
                     Map.entry(Zone.NEUTRAL_ZONE_RED_RIGHT,
-                            autoFactory.trajectoryCmd("TrenchLeftToOpponent")),
+                            m_autoFactory.trajectoryCmd("TrenchLeftToOpponent")),
                     Map.entry(Zone.RED_ALLIANCE_RIGHT,
-                            autoFactory.trajectoryCmd("TrenchLeftFromOpponent"))),
+                            m_autoFactory.trajectoryCmd("TrenchLeftFromOpponent"))),
             m_swerveSubsystem::getCurrentZone);
 
     private final Command selectBlueRightTrenchTraversal = new SelectCommand<>(
             Map.ofEntries(
                     Map.entry(Zone.BLUE_ALLIANCE_RIGHT,
-                            autoFactory.trajectoryCmd("TrenchRightFromAlliance")),
+                            m_autoFactory.trajectoryCmd("TrenchRightFromAlliance")),
                     Map.entry(Zone.NEUTRAL_ZONE_BLUE_RIGHT,
-                            autoFactory.trajectoryCmd("TrenchRightToAlliance")),
+                            m_autoFactory.trajectoryCmd("TrenchRightToAlliance")),
                     Map.entry(Zone.NEUTRAL_ZONE_RED_LEFT,
-                            autoFactory.trajectoryCmd("TrenchRightToOpponent")),
+                            m_autoFactory.trajectoryCmd("TrenchRightToOpponent")),
                     Map.entry(Zone.RED_ALLIANCE_LEFT,
-                            autoFactory.trajectoryCmd("TrenchRightFromOpponent"))),
+                            m_autoFactory.trajectoryCmd("TrenchRightFromOpponent"))),
             m_swerveSubsystem::getCurrentZone);
 
     private void configureBindings() {

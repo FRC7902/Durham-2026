@@ -1,14 +1,18 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.AutoConstants.Position;
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -58,13 +62,28 @@ public class Autos {
         return new InstantCommand(
                 () -> m_swerveSubsystem.setDriveToWaypoint(waypoint))
 
-                // Wait until the robot is within the specified tolerance of the waypoint
+                // Wait until the robot is within the specified default tolerances of the waypoint
                 .andThen(Commands.waitUntil(
                         m_swerveSubsystem::isAtWaypoint));
+
+    private Command driveToWaypoint(Pose2d waypoint, Angle angleTolerance) {
+        return new InstantCommand(
+                () -> m_swerveSubsystem.setDriveToWaypoint(waypoint))
+
+                // Wait until the robot is within the specified angle tolerance of the waypoint
+                .andThen(
+                        Commands.waitUntil(
+                                () -> m_swerveSubsystem.isAtWaypoint(
+                                        AutoConstants.DEFAULT_WAYPOINT_TOLERANCE,
+                                        angleTolerance.in(Degrees))));
     }
 
     private Command driveToWaypoint(Position position) {
         return driveToWaypoint(AutoConstants.positionToPose.get(position));
+    }
+
+    private Command driveToWaypoint(Position position, Angle angleTolerance) {
+        return driveToWaypoint(AutoConstants.positionToPose.get(position), angleTolerance);
     }
 
     private Command resetOdometry(Pose2d waypoint) {
@@ -78,8 +97,6 @@ public class Autos {
     public Command rightNeutralAuto() {
 
         // TODO: Add alliance flipping util
-
-        // SmartDashboard.putString("rightNeutralAutoState", "1");
 
         return new SequentialCommandGroup(
                 resetOdometry(Position.STARTING_LINE_RIGHT),

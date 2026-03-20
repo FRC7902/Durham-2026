@@ -775,31 +775,39 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void getAllianceShift() {
-        String colorInactive = DriverStation.getGameSpecificMessage().charAt(0) == 'R' ? "Red" : "Blue";
+        Color colorInactive = DriverStation.getGameSpecificMessage().charAt(0) ==
+        'R' ? Color.RED : Color.BLUE;
         double timeLeft = 0;
-        double matchTime = Timer.getMatchTime();
+        double matchTime = DriverStationSim.getMatchTime();
         Color color = Color.BOTH;
         String colorCode = "#FFFFFF";
-        if (matchTime <= MatchConstants.MATCH_TIME_TRANSITION_SHIFT) {
-            timeLeft = MatchConstants.TRANSITION_SHIFT - matchTime;
-            color = colorInactive.equalsIgnoreCase("red") ? Color.BLUE : Color.RED;
-        } else if (matchTime > MatchConstants.MATCH_TIME_TRANSITION_SHIFT
-                && matchTime <= MatchConstants.MATCH_TIME_SHIFT_1) {
-            timeLeft = MatchConstants.SHIFT_1 - (matchTime - MatchConstants.TRANSITION_SHIFT);
-            color = colorInactive.equalsIgnoreCase("red") ? Color.RED : Color.BLUE;
-        } else if (matchTime > MatchConstants.MATCH_TIME_SHIFT_1 && matchTime <= MatchConstants.MATCH_TIME_SHIFT_2) {
-            timeLeft = MatchConstants.SHIFT_2 - (matchTime - MatchConstants.MATCH_TIME_SHIFT_1);
-            color = colorInactive.equalsIgnoreCase("red") ? Color.BLUE : Color.RED;
-        } else if (matchTime > MatchConstants.MATCH_TIME_SHIFT_2 && matchTime <= MatchConstants.MATCH_TIME_SHIFT_3) {
-            timeLeft = MatchConstants.SHIFT_3 - (matchTime - MatchConstants.MATCH_TIME_SHIFT_2);
-            color = colorInactive.equalsIgnoreCase("red") ? Color.RED : Color.BLUE;
-        } else if (matchTime > MatchConstants.MATCH_TIME_SHIFT_3 && matchTime <= MatchConstants.MATCH_TIME_SHIFT_4) {
-            timeLeft = MatchConstants.SHIFT_4 - (matchTime - MatchConstants.MATCH_TIME_SHIFT_3);
-            color = colorInactive.equalsIgnoreCase("red") ? Color.BLUE : Color.RED;
-        } else if (matchTime > MatchConstants.MATCH_TIME_SHIFT_4 && matchTime <= MatchConstants.MATCH_TIME_END_GAME) {
-            timeLeft = MatchConstants.END_GAME - (matchTime - MatchConstants.MATCH_TIME_SHIFT_4);
-            color = Color.BOTH;
+        if (!DriverStationSim.getAutonomous()) {
+            if (matchTime <= MatchConstants.MATCH_TIME_TELEOP_START
+                    && matchTime > MatchConstants.MATCH_TIME_TRANSITION_END) {
+                color = colorInactive == Color.RED ? Color.BLUE : Color.RED;
+                timeLeft = matchTime - MatchConstants.MATCH_TIME_TRANSITION_END;
+            } else if (matchTime <= MatchConstants.MATCH_TIME_TRANSITION_END
+                    && matchTime > MatchConstants.MATCH_TIME_SHIFT_1_END) {
+                color = colorInactive == Color.RED ? Color.RED : Color.BLUE;
+                timeLeft = matchTime - MatchConstants.MATCH_TIME_SHIFT_1_END;
+            } else if (matchTime <= MatchConstants.MATCH_TIME_SHIFT_1_END
+                    && matchTime > MatchConstants.MATCH_TIME_SHIFT_2_END) {
+                color = colorInactive == Color.RED ? Color.BLUE : Color.RED;
+                timeLeft = matchTime - MatchConstants.MATCH_TIME_SHIFT_2_END;
+            } else if (matchTime <= MatchConstants.MATCH_TIME_SHIFT_2_END
+                    && matchTime > MatchConstants.MATCH_TIME_SHIFT_3_END) {
+                color = colorInactive == Color.RED ? Color.RED : Color.BLUE;
+                timeLeft = matchTime - MatchConstants.MATCH_TIME_SHIFT_3_END;
+            } else if (matchTime <= MatchConstants.MATCH_TIME_SHIFT_3_END
+                    && matchTime > MatchConstants.MATCH_TIME_SHIFT_4_END) {
+                color = colorInactive == Color.RED ? Color.BLUE : Color.RED;
+                timeLeft = matchTime - MatchConstants.MATCH_TIME_SHIFT_4_END;
+            } else if (matchTime <= MatchConstants.MATCH_TIME_SHIFT_4_END && matchTime > MatchConstants.END_GAME) {
+                color = Color.BOTH;
+                timeLeft = matchTime - MatchConstants.MATCH_TIME_END_GAME_END;
+            }
         }
+
         if (color == Color.RED) {
             colorCode = "#FF0000";
         } else if (color == Color.BLUE) {
@@ -809,6 +817,7 @@ public class SwerveSubsystem extends SubsystemBase {
         }
         SmartDashboard.putNumber("Shift time", timeLeft);
         SmartDashboard.putString("Alliance Shift Color", colorCode);
+        SmartDashboard.putNumber("Match Time", matchTime);
     }
 
     @Override

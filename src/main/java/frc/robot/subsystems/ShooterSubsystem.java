@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Seconds;
 
 import java.util.function.Supplier;
 
@@ -12,6 +13,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -103,7 +105,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 .withName("SHTR - Aim and Shoot Stationary");
     }
 
-    public Command aimAndShootIgnoreCheck(Supplier<Distance> getDistanceToTarget) {
+    public Command aimAndShootIgnoreCheck(Supplier<Distance> getDistanceToTarget, Time delayBeforeShooting) {
         return Commands.parallel(
                 m_hoodSubsystem.setAngle(() -> {
                     Distance distance = getDistanceToTarget.get();
@@ -111,11 +113,15 @@ public class ShooterSubsystem extends SubsystemBase {
                     return m_hoodSubsystem.getAngleToTarget(distance, zone);
                 }),
                 m_flywheelSubsystem.setSpeed(() -> m_flywheelSubsystem.getTargetVelocity(getDistanceToTarget.get())),
-                new WaitCommand(2).andThen(
+                new WaitCommand(delayBeforeShooting).andThen(
                         m_feederSubsystem.feed()))
                 .withName("SHTR - Aim and Shoot");
-
     }
+
+    public Command aimAndShootIgnoreCheck(Supplier<Distance> getDistanceToTarget) {
+        return aimAndShootIgnoreCheck(getDistanceToTarget, Seconds.of(1));
+    }
+
     // TODO: What if we get pushed while we're auto-aiming? This may 'cause
     // isAutoAimReady to never be true. Maybe lock swerve pose?
 

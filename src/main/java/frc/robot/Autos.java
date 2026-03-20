@@ -1,7 +1,6 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,7 +9,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -22,7 +20,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.intake.IntakeRollerSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem;
-import frc.robot.utils.PoseUtils;
 import swervelib.SwerveInputStream;
 
 public class Autos {
@@ -191,19 +188,23 @@ public class Autos {
                 new InstantCommand(
                         () -> m_robotContainer.driveAngularVelocity.driveToPoseEnabled(true)),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "2")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "2")),
 
                 driveToWaypoint(Position.NEUTRAL_RIGHT_1),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "3")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "3")),
 
                 m_linearIntakeSubsystem.extend(),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "4")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "4")),
 
                 m_intakeRollerSubsystem.intake(),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "5")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "5")),
 
                 // Drive to center line and extend/run intake
                 // Commands.deadline(
@@ -215,23 +216,28 @@ public class Autos {
                 // Drive to center of field
                 driveToWaypoint(Position.NEUTRAL_RIGHT_2),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "6")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "6")),
 
                 driveToWaypoint(Position.NEUTRAL_RIGHT_3),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "7")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "7")),
 
                 m_linearIntakeSubsystem.midpoint(),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "8")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "8")),
 
                 m_intakeRollerSubsystem.stop(),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "9")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "9")),
 
                 m_indexerSubsystem.stop(),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "10")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "10")),
 
                 // Drive back to trench
                 // Commands.deadline(
@@ -244,7 +250,8 @@ public class Autos {
                 // Get in shooting position
                 driveToWaypoint(Position.ALLIANCE_RIGHT_1),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "11")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "11")),
 
                 // Shoot for 5s
                 Commands.deadline(
@@ -256,15 +263,18 @@ public class Autos {
                 // m_linearIntakeSubsystem.shuffle()
                 ),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "12")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "12")),
 
                 driveToWaypoint(Position.NEUTRAL_RIGHT_4),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "13")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "13")),
 
                 m_linearIntakeSubsystem.extend(),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "14")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "14")),
 
                 m_intakeRollerSubsystem.intake(),
 
@@ -276,7 +286,8 @@ public class Autos {
                 // m_intakeRollerSubsystem.stop(),
                 // m_linearIntakeSubsystem.midpoint()),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "15")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "15")),
 
                 driveToWaypoint(Position.NEUTRAL_RIGHT_5),
                 // Commands.deadline(
@@ -285,15 +296,18 @@ public class Autos {
                 // m_intakeRollerSubsystem.intake(),
                 // m_indexerSubsystem.run()),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "16")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "16")),
 
                 driveToWaypoint(Position.NEUTRAL_RIGHT_6),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "17")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "17")),
 
                 driveToWaypoint(Position.NEUTRAL_RIGHT_4),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "18")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "18")),
                 // Commands.deadline(
                 // driveToWaypoint(Position.NEUTRAL_RIGHT_4),
                 // m_linearIntakeSubsystem.midpoint().andThen(
@@ -303,15 +317,19 @@ public class Autos {
 
                 m_linearIntakeSubsystem.midpoint(),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "19")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "19")),
                 m_intakeRollerSubsystem.stop(),
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "20")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "20")),
                 m_indexerSubsystem.stop(),
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "21")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "21")),
 
                 driveToWaypoint(Position.ALLIANCE_RIGHT_1),
 
-                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState", "22")),
+                // new InstantCommand(() -> SmartDashboard.putString("rightNeutralAutoState",
+                // "22")),
                 Commands.parallel(
                         m_shooterSubsystem.aimAndShootIgnoreCheck(
                                 m_swerveSubsystem::getDistanceToTarget),

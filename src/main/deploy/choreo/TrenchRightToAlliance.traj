@@ -184,6 +184,6 @@
   "splits":[0]
  },
  "events":[
-   {"name":"Shoot", "from":{"target":5, "targetTimestamp":4.3872, "offset":{"exp":"1 s", "val":1.0}}, "event":null},
+   {"name":"Shoot", "from":{"target":5, "targetTimestamp":4.3872, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
    {"name":"StopIntake", "from":{"target":2, "targetTimestamp":1.19433, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
 }

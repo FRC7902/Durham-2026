@@ -3,6 +3,9 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
+import choreo.auto.AutoFactory;
+import choreo.auto.AutoRoutine;
+import choreo.auto.AutoTrajectory;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -21,6 +24,7 @@ import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.SwerveSubsystem.Zone;
 import frc.robot.subsystems.intake.IntakeRollerSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem;
 import swervelib.SwerveInputStream;
@@ -39,6 +43,8 @@ public class Autos {
     private final Command m_driveFieldOrientedAngularVelocity;
     private final Command m_driveFieldOrientedAutoAim;
 
+    private final AutoFactory m_autoFactory;
+
     public Autos(RobotContainer robotContainer) {
         m_robotContainer = robotContainer;
 
@@ -52,6 +58,25 @@ public class Autos {
 
         m_driveFieldOrientedAngularVelocity = m_robotContainer.driveFieldOrientedAngularVelocity;
         m_driveFieldOrientedAutoAim = m_robotContainer.driveFieldOrientedAutoAim;
+
+        m_autoFactory = robotContainer.autoFactory;
+
+        m_autoFactory
+                .bind("Intake", Commands.sequence(
+                        m_linearIntakeSubsystem.extend(),
+                        m_intakeRollerSubsystem.intake(),
+                        m_indexerSubsystem.run()
+                ))
+                .bind("StopIntake", m_linearIntakeSubsystem.midpoint().andThen(
+                        m_intakeRollerSubsystem.stop(),
+                        m_indexerSubsystem.stop()
+                ))
+                .bind("Shoot", Commands.parallel(
+                        m_shooterSubsystem.aimAndShootIgnoreCheck(
+                                m_swerveSubsystem::getDistanceToTarget),
+                        m_indexerSubsystem.run(),
+                        m_intakeRollerSubsystem.intake()
+                ));
 
         if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
             StructArrayPublisher<Pose2d> waypointPositions = NetworkTableInstance.getDefault()
@@ -207,81 +232,100 @@ public class Autos {
                 SwerveConstants.DRIVE_TO_POSE_ROTATION_MAX_ACCELERATION_RAD);
     }
 
-    public Command rightNeutralAuto() {
+//     public Command rightNeutralAuto() {
 
-        // TODO: Add alliance flipping util
+//         // TODO: Add alliance flipping util
 
-        SmartDashboard.putString("autoTest", "NOT STARTED");
-        SmartDashboard.putString("driveToWaypointCHECK", "NULL");
+//         SmartDashboard.putString("autoTest", "NOT STARTED");
+//         SmartDashboard.putString("driveToWaypointCHECK", "NULL");
 
-        return new SequentialCommandGroup(
-                resetOdometry(Position.STARTING_LINE_RIGHT),
-                new InstantCommand(
-                        () -> m_robotContainer.driveAngularVelocity.driveToPoseEnabled(true)),
+//         return new SequentialCommandGroup(
+//                 resetOdometry(Position.STARTING_LINE_RIGHT),
+//                 new InstantCommand(
+//                         () -> m_robotContainer.driveAngularVelocity.driveToPoseEnabled(true)),
 
-                new InstantCommand(() -> SmartDashboard.putString("autoTest", "GO TO NEUTRAL RIGHT 1")),
+//                 new InstantCommand(() -> SmartDashboard.putString("autoTest", "GO TO NEUTRAL RIGHT 1")),
 
-                // Drive to center line
-                driveToWaypoint(Position.NEUTRAL_RIGHT_1),
+//                 // Drive to center line
+//                 driveToWaypoint(Position.NEUTRAL_RIGHT_1),
 
-                // Commands.parallel(
-                // m_linearIntakeSubsystem.extend(),
-                // m_intakeRollerSubsystem.intake(),
-                // m_indexerSubsystem.run()),
+//                 // Commands.parallel(
+//                 // m_linearIntakeSubsystem.extend(),
+//                 // m_intakeRollerSubsystem.intake(),
+//                 // m_indexerSubsystem.run()),
 
-                // Drive to center of field
-                // driveToWaypoint(Position.NEUTRAL_RIGHT_2),
+//                 // Drive to center of field
+//                 // driveToWaypoint(Position.NEUTRAL_RIGHT_2),
 
-                // Drive to center field and extend/run intake
+//                 // Drive to center field and extend/run intake
 
-                // TODO: RE-ADD SHUFFLING (cause intake kicker bar is broken right now)
+//                 // TODO: RE-ADD SHUFFLING (cause intake kicker bar is broken right now)
 
-                new InstantCommand(() -> SmartDashboard.putString("autoTest", "GO TO NEUTRAL RIGHT 2")),
+//                 new InstantCommand(() -> SmartDashboard.putString("autoTest", "GO TO NEUTRAL RIGHT 2")),
 
-                driveToWaypoint(Position.NEUTRAL_RIGHT_2)
-                        .withTimeout(3)
-                        .deadlineFor(
-                                m_linearIntakeSubsystem.extend(),
-                                m_intakeRollerSubsystem.intake(),
-                                m_indexerSubsystem.run()),
+//                 driveToWaypoint(Position.NEUTRAL_RIGHT_2)
+//                         .withTimeout(3)
+//                         .deadlineFor(
+//                                 m_linearIntakeSubsystem.extend(),
+//                                 m_intakeRollerSubsystem.intake(),
+//                                 m_indexerSubsystem.run()),
 
-                new InstantCommand(() -> SmartDashboard.putString("autoTest", "GO TO NEUTRAL RIGHT 3")),
+//                 new InstantCommand(() -> SmartDashboard.putString("autoTest", "GO TO NEUTRAL RIGHT 3")),
 
-                Commands.parallel(
-                        driveToWaypoint(Position.NEUTRAL_RIGHT_3, Degrees.of(2.5)),
-                        m_linearIntakeSubsystem.midpoint().andThen(
-                                m_intakeRollerSubsystem.stop(),
-                                m_indexerSubsystem.stop()))
-                        .withTimeout(3),
+//                 Commands.parallel(
+//                         driveToWaypoint(Position.NEUTRAL_RIGHT_3, Degrees.of(2.5)),
+//                         m_linearIntakeSubsystem.midpoint().andThen(
+//                                 m_intakeRollerSubsystem.stop(),
+//                                 m_indexerSubsystem.stop()))
+//                         .withTimeout(3),
 
-                // .deadlineFor(
-                // m_linearIntakeSubsystem.midpoint().andThen(
-                // Commands.parallel(
-                // m_intakeRollerSubsystem.stop(),
-                // m_indexerSubsystem.stop()))),
+//                 // .deadlineFor(
+//                 // m_linearIntakeSubsystem.midpoint().andThen(
+//                 // Commands.parallel(
+//                 // m_intakeRollerSubsystem.stop(),
+//                 // m_indexerSubsystem.stop()))),
 
-                // Drive back to trench
-                // Commands.deadline(
-                // driveToWaypoint(Position.NEUTRAL_RIGHT_3),
-                // m_linearIntakeSubsystem.midpoint().andThen(
-                // Commands.parallel(
-                // m_intakeRollerSubsystem.stop(),
-                // m_indexerSubsystem.stop()))),
+//                 // Drive back to trench
+//                 // Commands.deadline(
+//                 // driveToWaypoint(Position.NEUTRAL_RIGHT_3),
+//                 // m_linearIntakeSubsystem.midpoint().andThen(
+//                 // Commands.parallel(
+//                 // m_intakeRollerSubsystem.stop(),
+//                 // m_indexerSubsystem.stop()))),
 
-                new InstantCommand(
-                        () -> SmartDashboard.putString("autoTest", "GO TO ALLIANCE RIGHT 1")),
+//                 new InstantCommand(
+//                         () -> SmartDashboard.putString("autoTest", "GO TO ALLIANCE RIGHT 1")),
 
-                // Get in shooting position
-                driveToWaypoint(Position.ALLIANCE_RIGHT_1),
+//                 // Get in shooting position
+//                 driveToWaypoint(Position.ALLIANCE_RIGHT_1),
 
-                new InstantCommand(() -> SmartDashboard.putString("autoTest", "SHOOT")),
+//                 new InstantCommand(() -> SmartDashboard.putString("autoTest", "SHOOT")),
 
-                Commands.parallel(
-                        m_shooterSubsystem.aimAndShootIgnoreCheck(
-                                m_swerveSubsystem::getDistanceToTarget),
-                        m_indexerSubsystem.run(),
-                        m_intakeRollerSubsystem.intake()));
+//                 Commands.parallel(
+//                         m_shooterSubsystem.aimAndShootIgnoreCheck(
+//                                 m_swerveSubsystem::getDistanceToTarget),
+//                         m_indexerSubsystem.run(),
+//                         m_intakeRollerSubsystem.intake()));
 
+//     }
+
+    // Right neutral auto
+    public AutoRoutine rightNeutralAuto() {
+        AutoRoutine routine = m_autoFactory.newRoutine("rightNeutralAuto");
+
+        AutoTrajectory trenchRightToNeutral = routine.trajectory("TrenchRightToNeutral");
+        AutoTrajectory trenchRightToAlliance = routine.trajectory("TrenchRightToAlliance");
+
+        routine.active().onTrue(
+                Commands.sequence(
+                        trenchRightToNeutral.resetOdometry(),
+                        trenchRightToNeutral.cmd()
+                )
+        );
+
+        trenchRightToNeutral.chain(trenchRightToAlliance);
+
+        return routine;
     }
 
 }

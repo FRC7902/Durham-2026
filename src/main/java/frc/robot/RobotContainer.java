@@ -67,7 +67,7 @@ public class RobotContainer {
     private final LimelightWrapper m_limelightB;
 
     // Choreo
-    private final AutoFactory autoFactory = new AutoFactory(
+    public final AutoFactory autoFactory = new AutoFactory(
             m_swerveSubsystem::getPose, // A function that returns the current robot pose
             m_swerveSubsystem::resetOdometry, // A function that resets the current robot pose to
                                               // the provided
@@ -175,7 +175,8 @@ public class RobotContainer {
         // autoChooser.addCmd("Depot", m_autos::depotIntakeAuto);
         // autoChooser.addCmd("DepotOnly", m_autos::depotOnlyAuto);
         // autoChooser.addCmd("Neutral", m_autos::neutralAuto);
-        autoChooser.addCmd("rightNeutralAuto", m_autos::rightNeutralAuto);
+        // autoChooser.addCmd("rightNeutralAuto", m_autos::rightNeutralAuto);
+        autoChooser.addRoutine("rightNeutralAuto", m_autos::rightNeutralAuto);
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
@@ -231,7 +232,7 @@ public class RobotContainer {
                             autoFactory.trajectoryCmd("TrenchRightFromOpponent"))),
             m_swerveSubsystem::getCurrentZone);
 
-    private final Command selectBlueLeftTrenchTraversal = new SelectCommand<>(
+    public final Command selectBlueLeftTrenchTraversal = new SelectCommand<>(
             Map.ofEntries(
                     Map.entry(Zone.BLUE_ALLIANCE_LEFT,
                             autoFactory.trajectoryCmd("TrenchLeftFromAlliance")),
@@ -243,7 +244,7 @@ public class RobotContainer {
                             autoFactory.trajectoryCmd("TrenchLeftFromOpponent"))),
             m_swerveSubsystem::getCurrentZone);
 
-    private final Command selectBlueRightTrenchTraversal = new SelectCommand<>(
+    public final Command selectBlueRightTrenchTraversal = new SelectCommand<>(
             Map.ofEntries(
                     Map.entry(Zone.BLUE_ALLIANCE_RIGHT,
                             autoFactory.trajectoryCmd("TrenchRightFromAlliance")),

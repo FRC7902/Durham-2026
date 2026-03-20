@@ -62,9 +62,11 @@ public class Autos {
         return new InstantCommand(
                 () -> m_swerveSubsystem.setDriveToWaypoint(waypoint))
 
-                // Wait until the robot is within the specified default tolerances of the waypoint
+                // Wait until the robot is within the specified default tolerances of the
+                // waypoint
                 .andThen(Commands.waitUntil(
                         m_swerveSubsystem::isAtWaypoint));
+    }
 
     private Command driveToWaypoint(Pose2d waypoint, Angle angleTolerance) {
         return new InstantCommand(

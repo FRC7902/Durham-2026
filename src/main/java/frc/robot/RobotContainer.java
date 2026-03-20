@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.Seconds;
 
 import java.io.File;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import choreo.auto.AutoChooser;
@@ -28,9 +29,9 @@ import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ClimbConstants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.Constants.ClimbConstants.ElevatorConstants;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -258,6 +259,13 @@ public class RobotContainer {
     private void configureBindings() {
         m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
+        BooleanSupplier isIdle = () -> Math.abs(m_driverController.getLeftX()) < OperatorConstants.DEADBAND &&
+                Math.abs(m_driverController.getLeftY()) < OperatorConstants.DEADBAND &&
+                Math.abs(m_driverController.getRightX()) < OperatorConstants.DEADBAND &&
+                !DriverStation.isAutonomous();
+
+        Trigger isIdleTrigger = new Trigger(isIdle);
+
         m_driverController.options().onTrue((Commands.runOnce(m_swerveSubsystem::zeroGyroWithAlliance)));
         m_driverController.create().whileTrue(m_swerveSubsystem.centerModulesCommand());
 
@@ -280,8 +288,28 @@ public class RobotContainer {
                         new InstantCommand(() -> driveAngularVelocity.scaleTranslation(
                                 1.0).scaleRotation(1.0)));
 
+        Trigger autoAimOnTarget = new Trigger(m_swerveSubsystem::isAutoAimOnTarget);
+
         // Auto-aim (swerve heading with calculated hood angle) and shoot
-        m_driverController.R2().whileTrue(driveFieldOrientedAutoAim);
+        m_driverController.R2()
+                .and(isIdleTrigger.negate())
+                .and(autoAimOnTarget)
+                .whileTrue(driveFieldOrientedAutoAim);
+        m_driverController.R2()
+                .and(isIdleTrigger)
+                .and(autoAimOnTarget.negate())
+                .whileTrue(driveFieldOrientedAutoAim);
+        m_driverController.R2()
+                .and(isIdleTrigger.negate())
+                .and(autoAimOnTarget.negate())
+                .whileTrue(driveFieldOrientedAutoAim);
+        m_driverController.R2()
+                .and(isIdleTrigger)
+                .and(autoAimOnTarget)
+                .onTrue(
+                        Commands.sequence(
+                                Commands.waitSeconds(0.01),
+                                new InstantCommand(m_swerveSubsystem::lock, m_swerveSubsystem)));
         m_driverController.R2()
                 .and(isControllingDriveTrigger)
                 .onTrue(m_shooterSubsystem.aimAndShoot(
@@ -358,6 +386,11 @@ public class RobotContainer {
                                 m_shooterSubsystem.storeFuel()),
                         m_shooterSubsystem.stopShooting(),
                         m_driverController.L2()::getAsBoolean));
+        m_driverController.R1()
+                .whileTrue(
+                        Commands.sequence(
+                                Commands.waitSeconds(0.01),
+                                new InstantCommand(m_swerveSubsystem::lock, m_swerveSubsystem)));
         m_driverController.R1()
                 .and(m_driverController.R2().negate())
                 .onTrue(m_indexerSubsystem.run())

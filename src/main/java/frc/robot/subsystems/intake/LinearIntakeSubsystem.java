@@ -6,6 +6,7 @@ package frc.robot.subsystems.intake;
 
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 import java.util.Optional;
@@ -137,7 +138,8 @@ public class LinearIntakeSubsystem extends SubsystemBase {
 
     public Command setPosition(Distance position) {
         return m_linearIntake.runTo(position, LinearIntakeConstants.POSITION_TARGET_ERROR)
-                .andThen(stop());
+                .withTimeout(Seconds.of(3)).finallyDo(
+                        () -> m_smartMotorController.setDutyCycle(0));
     }
 
     public Distance getPosition() {

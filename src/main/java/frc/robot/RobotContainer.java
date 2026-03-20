@@ -177,8 +177,9 @@ public class RobotContainer {
         // autoChooser.addCmd("Depot", m_autos::depotIntakeAuto);
         // autoChooser.addCmd("DepotOnly", m_autos::depotOnlyAuto);
         // autoChooser.addCmd("Neutral", m_autos::neutralAuto);
-        autoChooser.addCmd("rightNeutralAuto", m_autos::rightNeutralAuto);
+        // autoChooser.addCmd("rightNeutralAuto", m_autos::rightNeutralAuto);
         autoChooser.addCmd("Back up -> Shoot Pre-load", m_choreo::shootPreloadAuto);
+        autoChooser.addCmd("Right Side Auto", m_choreo::rightNeutralAuto);
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -69,6 +70,8 @@ public class Robot extends TimedRobot {
 
         // Check the linear intake position and set the encoder position accordingly
         m_robotContainer.calibrateLinearIntakePosition();
+
+        m_robotContainer.getSwerveSubsystem().setInactiveFirst(DriverStation.getGameSpecificMessage().charAt(0));
     }
 
     @Override

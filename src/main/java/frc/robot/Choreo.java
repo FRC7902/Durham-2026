@@ -113,10 +113,19 @@ public class Choreo {
                                 () -> m_swerveSubsystem.getDistanceToTarget(true))));
     }
 
-    public Command rightNeutralAutoFirstSweep() {
+    private Command rightNeutralAutoFirstSweep() {
         return Commands.sequence(
                 m_autoFactory.resetOdometry("RightAuto1"),
                 m_autoFactory.trajectoryCmd("RightAuto1").deadlineFor(
+                        m_intakeRollerSubsystem.intake(),
+                        m_indexerSubsystem.run()),
+                m_swerveSubsystem.stop());
+    }
+
+    private Command leftNeutralAutoFirstSweep() {
+        return Commands.sequence(
+                m_autoFactory.resetOdometry("LeftAuto1"),
+                m_autoFactory.trajectoryCmd("LeftAuto1").deadlineFor(
                         m_intakeRollerSubsystem.intake(),
                         m_indexerSubsystem.run()),
                 m_swerveSubsystem.stop());
@@ -151,11 +160,34 @@ public class Choreo {
                         m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
                         m_shooterSubsystem.aimAndShootIgnoreCheck(
                                 () -> m_swerveSubsystem.getDistanceToTarget(true))),
-                Commands.waitSeconds(0.5).deadlineFor(
+                Commands.waitSeconds(1.0).deadlineFor(
                         new ConditionalCommand(
                                 m_swerveSubsystem.driveFieldOriented(aimTowardsBlue),
                                 m_swerveSubsystem.driveFieldOriented(aimTowardsRed), m_swerveSubsystem::isRedAlliance)),
                 m_autoFactory.trajectoryCmd("RightAuto3b").deadlineFor(
+                        m_intakeRollerSubsystem.stop(),
+                        m_indexerSubsystem.stop(),
+                        m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_UPPER_LIMIT),
+                        m_linearIntakeSubsystem.retract()),
+                m_swerveSubsystem.stop(),
+                m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_LOWER_LIMIT));
+    }
+
+    public Command leftNeutralAutoThenClimb() {
+        return Commands.sequence(
+                leftNeutralAutoFirstSweep(),
+                m_autoFactory.trajectoryCmd("LeftAuto2b"),
+                m_swerveSubsystem.stop(),
+                // TODO: Tune timing of these waits and commands
+                Commands.waitSeconds(4.5).deadlineFor(
+                        m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
+                        m_shooterSubsystem.aimAndShootIgnoreCheck(
+                                () -> m_swerveSubsystem.getDistanceToTarget(true))),
+                Commands.waitSeconds(1.0).deadlineFor(
+                        new ConditionalCommand(
+                                m_swerveSubsystem.driveFieldOriented(aimTowardsBlue),
+                                m_swerveSubsystem.driveFieldOriented(aimTowardsRed), m_swerveSubsystem::isRedAlliance)),
+                m_autoFactory.trajectoryCmd("LeftAuto3b").deadlineFor(
                         m_intakeRollerSubsystem.stop(),
                         m_indexerSubsystem.stop(),
                         m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_UPPER_LIMIT),

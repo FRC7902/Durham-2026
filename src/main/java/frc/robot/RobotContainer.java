@@ -170,9 +170,9 @@ public class RobotContainer {
         autoChooser = new AutoChooser();
 
         autoChooser.addCmd("Anywhere - Shoot pre-load", m_choreo::shootPreloadAuto);
-        autoChooser.addCmd("Right - Sweep once", m_choreo::rightNeutralAutoFirstSweep);
         autoChooser.addCmd("Right - Sweep twice", m_choreo::rightNeutralAutoSweepTwice);
         autoChooser.addCmd("Right - Sweep then climb", m_choreo::rightNeutralAutoThenClimb);
+        autoChooser.addCmd("Left - Sweep then climb", m_choreo::leftNeutralAutoThenClimb);
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());

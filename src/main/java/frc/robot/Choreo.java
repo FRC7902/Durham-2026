@@ -61,7 +61,8 @@ public class Choreo {
         return Commands.sequence(
                 m_autoFactory.resetOdometry("ShootPreloadAuto"),
                 // m_autoFactory.trajectoryCmd("ShootPreloadAuto"),
-                new InstantCommand(() -> m_swerveSubsystem.drive(new Translation2d(-0.25, 0.0), 0, false)),
+                new InstantCommand(
+                        () -> m_swerveSubsystem.drive(new Translation2d(-0.25, 0.0), 0, false)),
                 Commands.waitSeconds(3),
                 m_swerveSubsystem.stop(),
                 Commands.parallel(
@@ -75,13 +76,9 @@ public class Choreo {
     public Command rightNeutralAuto() {
         return Commands.sequence(
                 m_autoFactory.resetOdometry("RightAuto1"),
-                m_autoFactory.trajectoryCmd("RightAuto1"),
-                m_autoFactory.trajectoryCmd("RightAuto2").deadlineFor(
+                m_autoFactory.trajectoryCmd("RightAuto1").deadlineFor(
                         m_intakeRollerSubsystem.intake(),
                         m_indexerSubsystem.run()),
-                m_autoFactory.trajectoryCmd("RightAuto3").deadlineFor(
-                        m_intakeRollerSubsystem.stop(),
-                        m_indexerSubsystem.stop()),
                 m_swerveSubsystem.stop(),
                 Commands.waitSeconds(5).deadlineFor(
                         m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
@@ -89,11 +86,10 @@ public class Choreo {
                                 () -> m_swerveSubsystem.getDistanceToTarget(true)),
                         m_indexerSubsystem.run(),
                         m_intakeRollerSubsystem.intake()),
-                m_autoFactory.trajectoryCmd("RightAuto4"),
-                m_autoFactory.trajectoryCmd("RightAuto5").deadlineFor(
+                m_autoFactory.trajectoryCmd("RightAuto2").deadlineFor(
                         m_shooterSubsystem.stopShooting(),
-                        m_intakeRollerSubsystem.stop(),
-                        m_indexerSubsystem.stop()),
+                        m_intakeRollerSubsystem.intake(),
+                        m_indexerSubsystem.run()),
                 Commands.parallel(
                         m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
                         m_shooterSubsystem.aimAndShootIgnoreCheck(

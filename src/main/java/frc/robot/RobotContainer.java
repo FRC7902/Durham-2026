@@ -169,14 +169,6 @@ public class RobotContainer {
 
         autoChooser = new AutoChooser();
 
-        // autoChooser.addCmd("Right Neutral Zone Auto", m_autos::rightAuto);
-        // autoChooser.addCmd("Left Neutral Zone Auto", m_autos::leftAuto);
-        // autoChooser.addCmd("Center Shoot Preload Auto", m_autos::shootPreloadAuto);
-        // autoChooser.addCmd("Depot", m_autos::depotIntakeAuto);
-        // autoChooser.addCmd("DepotOnly", m_autos::depotOnlyAuto);
-        // autoChooser.addCmd("Neutral", m_autos::neutralAuto);
-        // autoChooser.addCmd("rightNeutralAuto", m_autos::rightNeutralAuto);
-
         autoChooser.addCmd("Anywhere - Shoot pre-load", m_choreo::shootPreloadAuto);
         autoChooser.addCmd("Right - Sweep once", m_choreo::rightNeutralAutoFirstSweep);
         autoChooser.addCmd("Right - Sweep twice", m_choreo::rightNeutralAutoSweepTwice);

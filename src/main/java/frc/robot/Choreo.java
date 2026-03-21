@@ -245,4 +245,20 @@ public class Choreo {
                 m_swerveSubsystem.stop(),
                 m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_LOWER_LIMIT));
     }
+
+    public Command shootPreloadAndClimb() {
+        return Commands.sequence(
+                m_autoFactory.resetOdometry("BackUpCenter"),
+                m_autoFactory.trajectoryCmd("BackUpCenter"),
+                Commands.waitSeconds(4.5).deadlineFor(
+                        m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
+                        m_shooterSubsystem.aimAndShootIgnoreCheck(
+                                () -> m_swerveSubsystem.getDistanceToTarget(true))),
+                // m_shooterSubsystem.stopShooting(),
+                m_autoFactory.trajectoryCmd("CenterToClimb").deadlineFor(
+                        m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_UPPER_LIMIT)),
+                m_swerveSubsystem.stop(),
+                m_autoFactory.trajectoryCmd("LeftAuto3b"),
+                m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_LOWER_LIMIT));
+    }
 }

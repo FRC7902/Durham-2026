@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ClimbConstants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -54,6 +55,7 @@ public class RobotContainer {
     // private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
     public final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
 
+    private final DashboardSubsystem m_dashboardSubsystem = new DashboardSubsystem();
     public final HopperSubsystem m_hopperSubsystem = new HopperSubsystem();
     public final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
     public final IntakeRollerSubsystem m_intakeRollerSubsystem = new IntakeRollerSubsystem();
@@ -527,4 +529,9 @@ public class RobotContainer {
     public void zeroGyroWithAlliance() {
         m_swerveSubsystem.zeroGyroWithAlliance();
     }
+
+    public DashboardSubsystem getDashboardSubsystem() {
+        return m_dashboardSubsystem;
+    }
 }
+// Zach worked on this line therefore is now a part of prog subdivision

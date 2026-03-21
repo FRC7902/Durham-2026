@@ -171,7 +171,8 @@ public final class Constants {
 
             public static final Distance SHUFFLE_CLOSE_POSITION = Meters.of(0.025);
             public static final Distance SHUFFLE_FAR_POSITION = MIDPOINT_POSITION.plus(Meters.of(0.05));
-            public static final Distance SHUFFLE_FURTHEST_POSITION = EXTENDED_POSITION.minus(Meters.of(0.05));
+            public static final Distance SHUFFLE_FURTHEST_POSITION = EXTENDED_POSITION
+                    .minus(Meters.of(0.05));
 
             public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(0),
                     Inches.of(10.682),
@@ -350,6 +351,7 @@ public final class Constants {
             public static final Angle HARD_LIMIT_MAX = Degrees.of(42.1875);
 
             public static final Angle DEFAULT_ANGLE = Degrees.of(8);
+            public static final Angle LOWER_HOOD_ANGLE = Degrees.of(20);
 
             public static final Distance LENGTH = Inches.of(8.5);
             public static final Mass MASS = Pounds.of(4.39);

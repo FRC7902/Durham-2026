@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -59,7 +60,8 @@ public class RobotContainer {
             "swerve"));
 
     private final SimSubsystem m_simSubsystem;
-
+    private final DashboardSubsystem m_dashboardSubsystem = new DashboardSubsystem();
+    
     private final LimelightWrapper m_limelightA;
     private final LimelightWrapper m_limelightB;
 
@@ -477,7 +479,7 @@ public class RobotContainer {
         m_swerveSubsystem.zeroGyroWithAlliance();
     }
 
-    public SwerveSubsystem getSwerveSubsystem() {
-        return m_swerveSubsystem;
+    public DashboardSubsystem getDashboardSubsystem() {
+        return m_dashboardSubsystem;
     }
 }

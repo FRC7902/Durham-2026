@@ -63,11 +63,6 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     private final SwerveDrive swerveDrive;
 
-    private Color colorInactive;
-    private Color color = Color.BOTH;
-    private double timeLeft = 0;
-    private double previousTime = 0;
-
     private PoseEstimate poseEstimateMt2;
     private PoseEstimate poseEstimateMt1;
 
@@ -771,48 +766,6 @@ public class SwerveSubsystem extends SubsystemBase {
         return m_selectedClimbPose;
     }
 
-    public enum Color {
-        RED,
-        BLUE,
-        BOTH
-    }
-
-    public void setInactiveFirst(char c) {
-        colorInactive = c == 'R' ? Color.RED : Color.BLUE;
-    }
-
-    public String getColorCode(Color color) {
-        if (color == Color.RED) {
-            return "#FF0000";
-        } else if (color == Color.BLUE) {
-            return "#0000FF";
-        }
-        return "#FFFFFF";
-    }
-
-    public void getAllianceShift() {
-        double matchTime = DriverStation.getMatchTime();
-        previousTime = timeLeft;
-        if (DriverStation.isAutonomous()) {
-            timeLeft = matchTime;
-        } else if (matchTime <= MatchConstants.MATCH_TIME_TELEOP_START
-                && matchTime > MatchConstants.MATCH_TIME_TRANSITION_END) {
-            color = (colorInactive == Color.RED) ? Color.BLUE : Color.RED;
-            timeLeft = matchTime - MatchConstants.MATCH_TIME_TRANSITION_END;
-        } else if (matchTime <= MatchConstants.MATCH_TIME_SHIFT_4_END) {
-            timeLeft = matchTime;
-            color = Color.BOTH;
-        } else {
-            timeLeft = (matchTime - 30) % 25;
-            if (timeLeft > previousTime) {
-                color = (color == Color.RED) ? Color.BLUE : Color.RED;
-            }
-        }
-        SmartDashboard.putNumber("Shift time", timeLeft);
-        SmartDashboard.putString("Alliance Shift Color", getColorCode(color));
-        SmartDashboard.putNumber("Match Time", matchTime);
-    }
-
     @Override
     public void periodic() {
         if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
@@ -820,7 +773,6 @@ public class SwerveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("currentHeading", getHeading().getDegrees());
             SmartDashboard.putBoolean("isAutoAimReady", isAutoAimOnTarget());
         }
-        getAllianceShift();
     }
 
     @Override

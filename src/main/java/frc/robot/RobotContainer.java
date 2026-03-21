@@ -527,4 +527,8 @@ public class RobotContainer {
     public void zeroGyroWithAlliance() {
         m_swerveSubsystem.zeroGyroWithAlliance();
     }
+
+    public ElevatorSubsystem getElevatorSubsystem() {
+        return m_elevatorSubsystem;
+    }
 }

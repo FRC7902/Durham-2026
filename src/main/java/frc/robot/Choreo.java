@@ -91,6 +91,7 @@ public class Choreo {
                         m_intakeRollerSubsystem.intake()),
                 m_autoFactory.trajectoryCmd("RightAuto4"),
                 m_autoFactory.trajectoryCmd("RightAuto5").deadlineFor(
+                        m_shooterSubsystem.stopShooting(),
                         m_intakeRollerSubsystem.stop(),
                         m_indexerSubsystem.stop()),
                 Commands.parallel(

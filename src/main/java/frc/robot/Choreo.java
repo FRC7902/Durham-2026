@@ -39,6 +39,9 @@ public class Choreo {
     public final SwerveInputStream aimTowardsRed;
     public final SwerveInputStream aimTowardsBlue;
 
+    public final SwerveInputStream backUpAndAimRed;
+    public final SwerveInputStream backUpAndAimBlue;
+
     public Choreo(RobotContainer robotContainer) {
         m_robotContainer = robotContainer;
 
@@ -64,34 +67,43 @@ public class Choreo {
                 .headingWhile(true)
                 .scaleTranslation(SwerveConstants.AUTO_AIM_SCALE_TRANSLATION);
 
-        aimTowardsRed = SwerveInputStream.of(m_swerveSubsystem.getSwerveDrive(),
-                () -> 0.0,
+        aimTowardsRed = stationaryAutoAim.copy()
+                .withControllerHeadingAxis(() -> 0.0, () -> -1.0);
+
+        aimTowardsBlue = stationaryAutoAim.copy()
+                .withControllerHeadingAxis(() -> 0.0, () -> 1.0);
+
+        backUpAndAimRed = SwerveInputStream.of(m_swerveSubsystem.getSwerveDrive(),
+                () -> -0.25,
                 () -> 0.0)
                 .deadband(OperatorConstants.DEADBAND)
                 .scaleTranslation(1.0)
                 .allianceRelativeControl(true)
-                .withControllerHeadingAxis(() -> 0.0, () -> -1.0)
+                .withControllerHeadingAxis(m_autoAimHeadingX, m_autoAimHeadingY)
                 .headingWhile(true)
                 .scaleTranslation(SwerveConstants.AUTO_AIM_SCALE_TRANSLATION);
 
-        aimTowardsBlue = SwerveInputStream.of(m_swerveSubsystem.getSwerveDrive(),
-                () -> 0.0,
+        backUpAndAimBlue = SwerveInputStream.of(m_swerveSubsystem.getSwerveDrive(),
+                () -> 0.25,
                 () -> 0.0)
                 .deadband(OperatorConstants.DEADBAND)
                 .scaleTranslation(1.0)
                 .allianceRelativeControl(true)
-                .withControllerHeadingAxis(() -> 0.0, () -> 1.0)
+                .withControllerHeadingAxis(m_autoAimHeadingX, m_autoAimHeadingY)
                 .headingWhile(true)
                 .scaleTranslation(SwerveConstants.AUTO_AIM_SCALE_TRANSLATION);
     }
 
     public Command shootPreloadAuto() {
         return Commands.sequence(
-                m_autoFactory.resetOdometry("ShootPreloadAuto"),
+                // m_autoFactory.resetOdometry("ShootPreloadAuto"),
                 // m_autoFactory.trajectoryCmd("ShootPreloadAuto"),
-                new InstantCommand(
-                        () -> m_swerveSubsystem.drive(new Translation2d(-0.25, 0.0), 0, false)),
-                Commands.waitSeconds(3),
+                // new InstantCommand(
+                // () -> m_swerveSubsystem.drive(new Translation2d(-0.25, 0.0), 0, false)),
+                Commands.waitSeconds(3).deadlineFor(new ConditionalCommand(
+                        m_swerveSubsystem.driveFieldOriented(backUpAndAimRed),
+                        m_swerveSubsystem.driveFieldOriented(backUpAndAimBlue),
+                        m_swerveSubsystem::isRedAlliance)),
                 m_swerveSubsystem.stop(),
                 Commands.parallel(
                         m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),

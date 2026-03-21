@@ -81,7 +81,6 @@ public class RobotContainer {
     );
 
     private final AutoChooser autoChooser;
-    private final Autos m_autos;
     private final Choreo m_choreo = new Choreo(this);
 
     /**
@@ -169,7 +168,6 @@ public class RobotContainer {
         }
 
         autoChooser = new AutoChooser();
-        m_autos = new Autos(this);
 
         // autoChooser.addCmd("Right Neutral Zone Auto", m_autos::rightAuto);
         // autoChooser.addCmd("Left Neutral Zone Auto", m_autos::leftAuto);
@@ -178,8 +176,11 @@ public class RobotContainer {
         // autoChooser.addCmd("DepotOnly", m_autos::depotOnlyAuto);
         // autoChooser.addCmd("Neutral", m_autos::neutralAuto);
         // autoChooser.addCmd("rightNeutralAuto", m_autos::rightNeutralAuto);
+
         autoChooser.addCmd("Back up -> Shoot Pre-load", m_choreo::shootPreloadAuto);
-        autoChooser.addCmd("Right Side Auto", m_choreo::rightNeutralAuto);
+        autoChooser.addCmd("Right - Sweep Once", m_choreo::rightNeutralAutoFirstSweep);
+        autoChooser.addCmd("Right - Sweep Twice", m_choreo::rightNeutralAutoSweepTwice);
+        autoChooser.addCmd("Right - Sweep Then Climb", m_choreo::rightNeutralAutoThenClimb);
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
         RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());

@@ -134,6 +134,8 @@ public class Choreo {
     public Command leftNeutralAutoSweepOnce() {
         return Commands.sequence(
                 leftNeutralAutoFirstSweep(),
+                m_autoFactory.trajectoryCmd("LeftAuto2a"),
+                m_swerveSubsystem.stop(),
                 Commands.parallel(
                         m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
                         m_shooterSubsystem.aimAndShootIgnoreCheck(
@@ -143,6 +145,8 @@ public class Choreo {
     public Command rightNeutralAutoSweepOnce() {
         return Commands.sequence(
                 rightNeutralAutoFirstSweep(),
+                m_autoFactory.trajectoryCmd("RightAuto2a"),
+                m_swerveSubsystem.stop(),
                 Commands.parallel(
                         m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
                         m_shooterSubsystem.aimAndShootIgnoreCheck(

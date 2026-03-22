@@ -506,7 +506,7 @@ public class RobotContainer {
 
     public void updateLocalization() {
         // TODO: Prioritize LL4 over LL3G
-        for (LimelightWrapper limelight : new LimelightWrapper[] { m_limelightA, m_limelightB }) {
+        for (LimelightWrapper limelight : new LimelightWrapper[] { m_limelightB, m_limelightA }) {
             if (limelight.updateLocalization(m_swerveSubsystem.getSwerveDrive())) {
                 break; // Stop once a limelight successfully localizes
             }

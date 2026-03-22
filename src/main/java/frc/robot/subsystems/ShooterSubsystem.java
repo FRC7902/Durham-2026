@@ -14,6 +14,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants.ShooterZone;
 import frc.robot.Robot;
 import frc.robot.subsystems.shooter.FeederSubsystem;
@@ -59,13 +61,8 @@ public class ShooterSubsystem extends SubsystemBase {
         if (Robot.isSimulation())
             return m_flywheelSubsystem.isAtTargetRPM(isFeeding);
 
-        if (isFeeding) {
-            return m_hoodSubsystem.isAtTargetAngle(isFeeding) &&
-                    m_flywheelSubsystem.isAtTargetRPM(isFeeding);
-        }
-
-        return m_hoodSubsystem.isAtTargetAngle() &&
-                m_flywheelSubsystem.isAtTargetRPM();
+        return m_hoodSubsystem.isAtTargetAngle(isFeeding) &&
+                m_flywheelSubsystem.isAtTargetRPM(isFeeding);
     }
 
     /**
@@ -251,10 +248,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
-        SmartDashboard.putBoolean("isHoodReady", m_hoodSubsystem.isAtTargetAngle());
-        SmartDashboard.putBoolean("isFlywheelReady", m_flywheelSubsystem.isAtTargetRPM());
-        // }
+        if (Constants.TELEMETRY && !DriverStation.isFMSAttached()) {
+            SmartDashboard.putBoolean("isHoodReady", m_hoodSubsystem.isAtTargetAngle());
+            SmartDashboard.putBoolean("isFlywheelReady", m_flywheelSubsystem.isAtTargetRPM());
+            SmartDashboard.putBoolean("isHoodReady (feeding)", m_hoodSubsystem.isAtTargetAngle(true));
+            SmartDashboard.putBoolean("isFlywheelReady (feeding)", m_flywheelSubsystem.isAtTargetRPM(true));
+        }
     }
 
     @Override

@@ -299,7 +299,7 @@ public final class Constants {
 
             public static final AngularVelocity SOFT_LIMIT_RPM = RPM.of(8000); // TODO
 
-            public static final AngularVelocity DEFAULT_VELOCITY = RPM.of(3500);;
+            public static final AngularVelocity DEFAULT_VELOCITY = RPM.of(4000);;
 
             public static final AngularVelocity RPM_TARGET_ERROR = RPM.of(100); // ~2% of
                                                                                 // ALLIANCE_SHOOTING_VELOCITY

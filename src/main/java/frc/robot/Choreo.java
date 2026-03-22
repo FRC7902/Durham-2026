@@ -246,17 +246,36 @@ public class Choreo {
                 m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_LOWER_LIMIT));
     }
 
-    public Command shootPreloadAndClimb() {
+    public Command shootPreloadAndClimbLeft() {
         return Commands.sequence(
-                m_autoFactory.resetOdometry("BackUpCenter"),
-                m_autoFactory.trajectoryCmd("BackUpCenter"),
+                m_autoFactory.resetOdometry("BackUpCenterLeft"),
+                m_autoFactory.trajectoryCmd("BackUpCenterLeft"),
                 Commands.waitSeconds(4.5).deadlineFor(
                         m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
                         m_shooterSubsystem.aimAndShootIgnoreCheck(
                                 () -> m_swerveSubsystem.getDistanceToTarget(true))),
-                m_autoFactory.trajectoryCmd("CenterToClimb"),
+                m_autoFactory.trajectoryCmd("CenterToClimbLeft"),
                 m_swerveSubsystem.stop(),
                 m_autoFactory.trajectoryCmd("LeftAuto3b").deadlineFor(
+                        m_intakeRollerSubsystem.stop(),
+                        m_indexerSubsystem.stop(),
+                        m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_UPPER_LIMIT),
+                        m_linearIntakeSubsystem.retract()),
+                m_swerveSubsystem.stop(),
+                m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_LOWER_LIMIT));
+    }
+
+    public Command shootPreloadAndClimbRight() {
+        return Commands.sequence(
+                m_autoFactory.resetOdometry("BackUpCenterRight"),
+                m_autoFactory.trajectoryCmd("BackUpCenterRight"),
+                Commands.waitSeconds(4.5).deadlineFor(
+                        m_swerveSubsystem.driveFieldOriented(stationaryAutoAim),
+                        m_shooterSubsystem.aimAndShootIgnoreCheck(
+                                () -> m_swerveSubsystem.getDistanceToTarget(true))),
+                m_autoFactory.trajectoryCmd("CenterToClimbRight"),
+                m_swerveSubsystem.stop(),
+                m_autoFactory.trajectoryCmd("RightAuto3b").deadlineFor(
                         m_intakeRollerSubsystem.stop(),
                         m_indexerSubsystem.stop(),
                         m_elevatorSubsystem.setHeight(ElevatorConstants.SOFT_UPPER_LIMIT),

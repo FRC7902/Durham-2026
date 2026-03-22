@@ -617,6 +617,15 @@ public class SwerveSubsystem extends SubsystemBase {
         return getCurrentZone() == zone;
     }
 
+    public boolean isInAllianceZone() {
+        Zone currentZone = getCurrentZone();
+        if (isRedAlliance()) {
+            return currentZone == Zone.RED_ALLIANCE_LEFT || currentZone == Zone.RED_ALLIANCE_RIGHT;
+        } else {
+            return currentZone == Zone.BLUE_ALLIANCE_LEFT || currentZone == Zone.BLUE_ALLIANCE_RIGHT;
+        }
+    }
+
     /**
      * Gets the distance to the hub.
      *

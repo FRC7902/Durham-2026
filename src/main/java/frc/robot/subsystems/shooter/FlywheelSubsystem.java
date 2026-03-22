@@ -201,6 +201,25 @@ public class FlywheelSubsystem extends SubsystemBase {
                         FlywheelConstants.RPM_TARGET_ERROR));
     }
 
+    public boolean isAtTargetRPM(boolean isFeeding) {
+        Optional<AngularVelocity> setpoint = getSetpointVelocity();
+
+        if (!setpoint.isPresent())
+            return false;
+
+        if (isFeeding) {
+            return m_atRPMDebouncer.calculate(
+                    setpoint.get().times(FlywheelConstants.GEARBOX.getOutputToInputConversionFactor()).isNear(
+                            getAngularVelocity(),
+                            FlywheelConstants.RPM_TARGET_ERROR_WHILE_FEEDING));
+        }
+
+        return m_atRPMDebouncer.calculate(
+                setpoint.get().times(FlywheelConstants.GEARBOX.getOutputToInputConversionFactor()).isNear(
+                        getAngularVelocity(),
+                        FlywheelConstants.RPM_TARGET_ERROR));
+    }
+
     public Command stop() {
         return this.runOnce(() -> {
             m_smartMotorController.stopClosedLoopController();

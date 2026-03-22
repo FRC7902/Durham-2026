@@ -301,8 +301,9 @@ public final class Constants {
 
             public static final AngularVelocity DEFAULT_VELOCITY = RPM.of(4000);;
 
-            public static final AngularVelocity RPM_TARGET_ERROR = RPM.of(100); // ~2% of
-                                                                                // ALLIANCE_SHOOTING_VELOCITY
+            public static final AngularVelocity RPM_TARGET_ERROR = RPM.of(100);
+            public static final AngularVelocity RPM_TARGET_ERROR_WHILE_FEEDING = RPM.of(200);
+
             public static final Time AT_RPM_DEBOUNCE_TIME = Seconds.of(0.5); // TODO
 
             public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(-5.087),
@@ -361,6 +362,7 @@ public final class Constants {
             public static final Angle EXTERNAL_ENCODER_ZERO_OFFSET = Degrees.of(163.8); // TODO
 
             public static final Angle ANGLE_TARGET_ERROR = Degrees.of(2.5);
+            public static final Angle ANGLE_TARGET_ERROR_WHILE_FEEDING = Degrees.of(5);
             public static final double AT_ANGLE_DEBOUNCE_TIME = 0.2; // TODO
 
             public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(-5.087),

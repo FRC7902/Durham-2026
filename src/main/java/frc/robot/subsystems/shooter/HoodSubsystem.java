@@ -181,6 +181,22 @@ public class HoodSubsystem extends SubsystemBase {
                 getAngleSetpoint().get().isNear(m_hood.getAngle(), HoodConstants.ANGLE_TARGET_ERROR));
     }
 
+    public boolean isAtTargetAngle(boolean isFeeding) {
+
+        Optional<Angle> setpoint = getAngleSetpoint();
+
+        if (!setpoint.isPresent())
+            return false;
+
+        if (isFeeding) {
+            return m_atAngleDebouncer.calculate(
+                    getAngleSetpoint().get().isNear(m_hood.getAngle(), HoodConstants.ANGLE_TARGET_ERROR_WHILE_FEEDING));
+        }
+
+        return m_atAngleDebouncer.calculate(
+                getAngleSetpoint().get().isNear(m_hood.getAngle(), HoodConstants.ANGLE_TARGET_ERROR));
+    }
+
     public ShooterZone getSpeedZone(Distance distanceToTarget) {
         return ShooterConstants.MIN_DISTANCE_TO_FLYWHEEL_SPEED_ZONE.entrySet().stream()
                 .filter(entry -> distanceToTarget.in(Meters) >= entry.getKey().in(Meters))

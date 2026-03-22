@@ -19,7 +19,7 @@ import swervelib.SwerveDrive;
 public class LimelightWrapper extends Limelight {
 
     private final boolean isLL4;
-    private final PoseEstimate poseEstimateMt2;
+    public final PoseEstimate poseEstimateMt2;
     private final PoseEstimate poseEstimateMt1;
 
     public LimelightWrapper(String limelightName, boolean isLL4) {
@@ -95,7 +95,7 @@ public class LimelightWrapper extends Limelight {
      * @param poseEstimate the pose estimate from the limelight
      * @return the estimated standard deviations
      */
-    private Matrix<N3, N1> getEstimationStdDevsLimelightMT2(
+    public Matrix<N3, N1> getEstimationStdDevsLimelightMT2(
             limelight.networktables.PoseEstimate poseEstimate,
             boolean isLL4) {
         var estStdDevs = VisionConstants.MT2_STDDEV;

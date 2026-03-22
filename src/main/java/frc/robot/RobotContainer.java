@@ -35,6 +35,7 @@ import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.LimeLightChooser;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SimSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -44,6 +45,7 @@ import frc.robot.subsystems.intake.IntakeRollerSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem;
 import frc.robot.subsystems.intake.LinearIntakeSubsystem.LinearIntakePosition;
 import frc.robot.utils.LimelightWrapper;
+import limelight.Limelight;
 import limelight.networktables.LimelightSettings.ImuMode;
 import swervelib.SwerveInputStream;
 import swervelib.simulation.ironmaple.simulation.SimulatedArena;
@@ -63,11 +65,12 @@ public class RobotContainer {
     public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
     public final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve"));
+    public final LimeLightChooser m_LimeLightChooser;
 
     private final SimSubsystem m_simSubsystem;
 
-    private final LimelightWrapper m_limelightA;
-    private final LimelightWrapper m_limelightB;
+    public final LimelightWrapper m_limelightA;
+    public final LimelightWrapper m_limelightB;
 
     // Choreo
     public final AutoFactory m_autoFactory = new AutoFactory(
@@ -187,6 +190,7 @@ public class RobotContainer {
 
         m_limelightA = new LimelightWrapper("limelight-a", true);
         m_limelightB = new LimelightWrapper("limelight-b", true);
+        m_LimeLightChooser = new LimeLightChooser(m_limelightA, m_limelightB);
 
         // Only do this for LL4, so we use heading readings from MT1 from 3G?
         m_limelightA.getSettings().withImuMode(ImuMode.ExternalImu).save();
@@ -507,12 +511,26 @@ public class RobotContainer {
     }
 
     public void updateLocalization() {
-        // TODO: Prioritize LL4 over LL3G
-        for (LimelightWrapper limelight : new LimelightWrapper[] { m_limelightB, m_limelightA }) {
-            if (limelight.updateLocalization(m_swerveSubsystem.getSwerveDrive())) {
-                break; // Stop once a limelight successfully localizes
-            }
+        int LimeLight = m_LimeLightChooser.prioritizeLimelight();
+        if(LimeLight == 1){
+                m_limelightA.updateLocalization(m_swerveSubsystem.getSwerveDrive());
+        } else if(LimeLight == -1){
+                m_limelightB.updateLocalization(m_swerveSubsystem.getSwerveDrive());
+        } else {
+                for (LimelightWrapper limelight : new LimelightWrapper[] { m_limelightB, m_limelightA }) {
+                        if (limelight.updateLocalization(m_swerveSubsystem.getSwerveDrive())) {
+                                break; // Stop once a limelight successfully localizes
+                        }
+                }
         }
+
+        // TODO: Prioritize LL4 over LL3G
+        // for (LimelightWrapper limelight : new LimelightWrapper[] { m_limelightB, m_limelightA }) {
+                
+        //     if (limelight.updateLocalization(m_swerveSubsystem.getSwerveDrive())) {
+        //         break; // Stop once a limelight successfully localizes
+        //     }
+        // }
     }
 
     public Command stopAllSubsystems() {

@@ -3,11 +3,9 @@ package frc.robot;
 import java.util.function.DoubleSupplier;
 
 import choreo.auto.AutoFactory;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ClimbConstants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveConstants;
@@ -204,7 +202,8 @@ public class Choreo {
                 Commands.waitSeconds(1.0).deadlineFor(
                         new ConditionalCommand(
                                 m_swerveSubsystem.driveFieldOriented(aimTowardsBlue),
-                                m_swerveSubsystem.driveFieldOriented(aimTowardsRed), m_swerveSubsystem::isRedAlliance)),
+                                m_swerveSubsystem.driveFieldOriented(aimTowardsRed),
+                                m_swerveSubsystem::isRedAlliance)),
                 m_autoFactory.trajectoryCmd("RightAuto3b").deadlineFor(
                         m_intakeRollerSubsystem.stop(),
                         m_indexerSubsystem.stop(),
@@ -236,7 +235,8 @@ public class Choreo {
                 Commands.waitSeconds(1.0).deadlineFor(
                         new ConditionalCommand(
                                 m_swerveSubsystem.driveFieldOriented(aimTowardsBlue),
-                                m_swerveSubsystem.driveFieldOriented(aimTowardsRed), m_swerveSubsystem::isRedAlliance)),
+                                m_swerveSubsystem.driveFieldOriented(aimTowardsRed),
+                                m_swerveSubsystem::isRedAlliance)),
                 m_autoFactory.trajectoryCmd("LeftAuto3b").deadlineFor(
                         m_intakeRollerSubsystem.stop(),
                         m_indexerSubsystem.stop(),

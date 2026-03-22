@@ -230,7 +230,7 @@ public final class Constants {
                         Map.entry(ShooterZone.ZONE_1, RPM.of(4000)),
                         Map.entry(ShooterZone.ZONE_2, RPM.of(4775)),
                         Map.entry(ShooterZone.ZONE_3, RPM.of(6700)),
-                        Map.entry(ShooterZone.ZONE_4, RPM.of(8000)));
+                        Map.entry(ShooterZone.ZONE_4, RPM.of(7600)));
 
         public static final Map<Distance, ShooterZone> MIN_DISTANCE_TO_FLYWHEEL_SPEED_ZONE = Map
                 .ofEntries(
@@ -302,7 +302,7 @@ public final class Constants {
             public static final AngularVelocity DEFAULT_VELOCITY = RPM.of(4000);;
 
             public static final AngularVelocity RPM_TARGET_ERROR = RPM.of(100);
-            public static final AngularVelocity RPM_TARGET_ERROR_WHILE_FEEDING = RPM.of(200);
+            public static final AngularVelocity RPM_TARGET_ERROR_WHILE_FEEDING = RPM.of(250);
 
             public static final Time AT_RPM_DEBOUNCE_TIME = Seconds.of(0.5); // TODO
 
@@ -352,7 +352,7 @@ public final class Constants {
             public static final Angle HARD_LIMIT_MAX = Degrees.of(42.1875);
 
             public static final Angle DEFAULT_ANGLE = Degrees.of(8);
-            public static final Angle LOWER_HOOD_ANGLE = Degrees.of(20);
+            public static final Angle LOWER_HOOD_ANGLE = Degrees.of(15);
 
             public static final Distance LENGTH = Inches.of(8.5);
             public static final Mass MASS = Pounds.of(4.39);
@@ -362,7 +362,7 @@ public final class Constants {
             public static final Angle EXTERNAL_ENCODER_ZERO_OFFSET = Degrees.of(163.8); // TODO
 
             public static final Angle ANGLE_TARGET_ERROR = Degrees.of(2.5);
-            public static final Angle ANGLE_TARGET_ERROR_WHILE_FEEDING = Degrees.of(5);
+            public static final Angle ANGLE_TARGET_ERROR_WHILE_FEEDING = Degrees.of(3.5);
             public static final double AT_ANGLE_DEBOUNCE_TIME = 0.2; // TODO
 
             public static final Translation3d RELATIVE_POSITION = new Translation3d(Inches.of(-5.087),
